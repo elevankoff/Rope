@@ -8,25 +8,37 @@
 template<typename T>
 class ImplicitTreapNode {
 public:
+    // Constructors
     ImplicitTreapNode(int priority, const T& value);
 
+    // Returns "node"'s subtree size
     static size_t getSize(ImplicitTreapNode* node);
 
+    // Returns current node's priority
     size_t getPriority() const;
+
+    // Return current node's value ref
+    T& getValue();
 
     const T& getValue() const;
 
+    // Sets new value
     void setValue(const T& otherValue);
 
-    size_t getSize() const; // returns size of subtree
+    // Returns size of subtree
+    size_t getSize() const;
 
-    void updateSize(); // updates size of current node by "left" and "right"
+    // Updates size of current node by "left" and "right"
+    void updateSize();
+
+public:
+    ImplicitTreapNode* left;
+    ImplicitTreapNode* right;
 
 private:
     T value;
+    // Size of subtree and randomly generated "priority"
     size_t size, priority;
-    ImplicitTreapNode* left;
-    ImplicitTreapNode* right;
 };
 
 #include "ImplicitTreapNode.cpp"
