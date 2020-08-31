@@ -36,7 +36,7 @@ public:
     // Merges two "ImplicitTreap"s into one
     void merge(ImplicitTreap<T>& lhs, ImplicitTreap<T>& rhs);
 
-    // Return random function of the current "ImplicitTreap"
+    // Returns random function of the current "ImplicitTreap"
     std::minstd_rand& getRandFunc();
 
 private:
