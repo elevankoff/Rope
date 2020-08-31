@@ -39,7 +39,7 @@ const T& ImplicitTreapNode<T>::getValue() const {
 
 template<typename T>
 void ImplicitTreapNode<T>::setValue(const T& otherValue) {
-    value(otherValue);
+    value = otherValue;
 }
 
 #endif //ROPE_IMPLICITTREAPNODE_CPP
