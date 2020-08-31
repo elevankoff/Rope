@@ -57,8 +57,8 @@ void ImplicitTreap<T>::erase(size_t pos) {
     ImplicitTreapNode<T>* left1 = p1.first;
     ImplicitTreapNode<T>* right1 = p1.second;
     auto p2 = split(left1, pos);
-    ImplicitTreapNode<T>* left2 = p1.first;
-    ImplicitTreapNode<T>* right2 = p1.second;
+    ImplicitTreapNode<T>* left2 = p2.first;
+    ImplicitTreapNode<T>* right2 = p2.second;
     delete right2;
     root = merge(left2, right1);
 }
