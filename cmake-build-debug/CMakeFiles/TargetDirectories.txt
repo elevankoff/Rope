@@ -1,0 +1,3 @@
+C:/Users/yegor/projects/Rope/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+C:/Users/yegor/projects/Rope/cmake-build-debug/CMakeFiles/Rope.dir
+C:/Users/yegor/projects/Rope/cmake-build-debug/CMakeFiles/edit_cache.dir
