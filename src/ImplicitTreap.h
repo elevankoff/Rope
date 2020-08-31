@@ -19,43 +19,47 @@ public:
     ImplicitTreapNode<T>* createNode(const T& value);
 
     // Returns the number of elements in the current "ImplicitTreap"
-    int getSize();
+    size_t getSize();
 
     // Returns root of the current "ImplicitTreap"
     ImplicitTreapNode<T>* getRoot() const;
 
     // Inserts an element in "pos" position
-    void insert(int pos, const T& value);
+    void insert(size_t pos, const T& value);
 
     // Deletes an element in position "pos"
-    void erase(int pos);
+    void erase(size_t pos);
 
     // Returns two "ImplicitTreap"s: "left" with first x elements, "right" with others
-    std::pair<ImplicitTreap<T>&, ImplicitTreap<T>&> split(int x);
+    std::pair<ImplicitTreap<T>&, ImplicitTreap<T>&> split(size_t x);
 
     // Merges two "ImplicitTreap"s into one
-    void merge(ImplicitTreap<T>& lhs, ImplicitTreap<T>& rhs);
+    ImplicitTreap<T> merge(ImplicitTreap<T>& lhs, ImplicitTreap<T>& rhs);
+
+    T& getValue(size_t pos);
+
+    const T& getValue(size_t pos) const;
 
     // Returns random function of the current "ImplicitTreap"
     std::minstd_rand& getRandFunc();
 
 private:
-    std::pair<ImplicitTreapNode<T>*, ImplicitTreapNode<T>*> split(ImplicitTreapNode<T>* curNode, int toCut);
+    std::pair<ImplicitTreapNode<T>*, ImplicitTreapNode<T>*> split(ImplicitTreapNode<T>* curNode, size_t toCut);
 
     ImplicitTreapNode<T>* merge(ImplicitTreapNode<T>* lhs, ImplicitTreapNode<T>* rhs);
 
-    ImplicitTreap<T>* insert(ImplicitTreap<T>* curRoot, int pos, const T& value);
+    ImplicitTreapNode<T>* insert(ImplicitTreapNode<T>* curRoot, size_t pos, const T& value);
 
     void clear(ImplicitTreapNode<T>* curNode);
 
 private:
     ImplicitTreapNode<T>* root;
-    const std::minstd_rand ImplicitTreapRandom;
+    std::minstd_rand ImplicitTreapRandom;
 
 public:
     ~ImplicitTreap();
 };
 
-#include "ImplicitTreapNode.cpp"
+#include "ImplicitTreap.cpp"
 
 #endif //ROPE_IMPLICITTREAP_H
