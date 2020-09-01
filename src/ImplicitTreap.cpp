@@ -29,11 +29,11 @@ ImplicitTreap<T>::ImplicitTreap(ImplicitTreapNode<T>* otherRoot)
 
 
 template<typename T>
-ImplicitTreap<T>::ImplicitTreap(const ImplicitTreap& other)
+ImplicitTreap<T>::ImplicitTreap(const ImplicitTreap<T>& other)
     : root(other.root) {}
 
 template<typename T>
-ImplicitTreap<T>::ImplicitTreap(ImplicitTreap&& other)
+ImplicitTreap<T>::ImplicitTreap(ImplicitTreap<T>&& other)
     : root(other.root) { other.root = nullptr; }
 
 template<typename T>
@@ -203,7 +203,7 @@ ImplicitTreap<T>& ImplicitTreap<T>::operator=(const ImplicitTreap<T>& other) {
 }
 
 template<typename T>
-ImplicitTreap<T>& ImplicitTreap<T>::operator=(ImplicitTreap&& other) {
+ImplicitTreap<T>& ImplicitTreap<T>::operator=(ImplicitTreap<T>&& other) {
     this->root = other.root;
     other.root = nullptr;
     return *this;
