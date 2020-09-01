@@ -62,20 +62,29 @@ void ImplicitTreap<T>::insert(size_t pos, const T& value) {
     root = insert(root, pos, value);
 }
 
+template<typename T>
+void ImplicitTreap<T>::erase(size_t pos, size_t cnt) {
+    if (pos + cnt > getSize())
+        throw std::out_of_range("Incorrect range");
+
+    auto p1 = split(root, pos + cnt);
+    ImplicitTreapNode<T>* left1 = p1.first;
+    ImplicitTreapNode<T>* right1 = p1.second;
+    auto p2 = split(left1, pos);
+
+    ImplicitTreapNode<T>* left2 = p2.first;
+    ImplicitTreapNode<T>* right2 = p2.second;
+    clear(right2);
+    root = merge(left2, right1);
+}
+
 
 template<typename T>
 void ImplicitTreap<T>::erase(size_t pos) {
     if (pos >= getSize())
         throw std::out_of_range("Attempt to erase non-existent element");
 
-    auto p1 = split(root, pos + 1);
-    ImplicitTreapNode<T>* left1 = p1.first;
-    ImplicitTreapNode<T>* right1 = p1.second;
-    auto p2 = split(left1, pos);
-    ImplicitTreapNode<T>* left2 = p2.first;
-    ImplicitTreapNode<T>* right2 = p2.second;
-    delete right2;
-    root = merge(left2, right1);
+    erase(pos, 1);
 }
 
 template<typename T>
@@ -184,20 +193,20 @@ ImplicitTreap<T>::~ImplicitTreap() {
 }
 
 template<typename T>
-void ImplicitTreap<T>::copy(ImplicitTreapNode<T>* to, ImplicitTreapNode<T>* from) {
-    if (!from) return;
-    if (to != nullptr) throw std::logic_error("Copying inside of not empty ImplicitTreap");
+ImplicitTreapNode<T>* ImplicitTreap<T>::copy(ImplicitTreapNode<T>* to, ImplicitTreapNode<T>* from) {
+    if (!from) return nullptr;
     to = createNode(from->getValue());
-    copy(to->left, from->left);
-    copy(to->right, from->right);
+    to->left = copy(to->left, from->left);
+    to->right = copy(to->right, from->right);
+    to->updateSize();
+    return to;
 }
 
 template<typename T>
 ImplicitTreap<T>& ImplicitTreap<T>::operator=(const ImplicitTreap<T>& other) {
     if (this != &other) {
-        clear(this->root);
-        this->root = nullptr;
-        copy(this->root, other.root);
+        clear(root);
+        root = copy(root, other.root);
     }
     return *this;
 }
