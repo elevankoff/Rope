@@ -15,11 +15,9 @@ public:
 
     explicit ImplicitTreap(const std::vector<T>& values);
 
-    explicit ImplicitTreap(ImplicitTreapNode<T>* otherRoot);
+    ImplicitTreap(const ImplicitTreap<T>& other);
 
-    explicit ImplicitTreap(const ImplicitTreap& other);
-
-    explicit ImplicitTreap(ImplicitTreap&& other);
+    ImplicitTreap(ImplicitTreap<T>&& other);
 
     // Creates node with the current "ImplicitTreap"'s random function
     [[ nodiscard ]] static ImplicitTreapNode<T>* createNode(const T& value);
@@ -33,13 +31,18 @@ public:
     // Inserts an element in "pos" position
     void insert(size_t pos, const T& value);
 
-    // Deletes an element in position "pos"
+    // Deletes elements in the interval [pos, pos + cnt)
+    void erase(size_t pos, size_t cnt);
+
+    // Deletes an element at position "pos"
     void erase(size_t pos);
 
     // Returns two "ImplicitTreap"s: "left" with first x elements, "right" with others
+    // Current "ImplicitTreap" is becoming empty
     [[ nodiscard ]] std::pair<ImplicitTreap<T>, ImplicitTreap<T>> split(size_t x);
 
     // Merges two "ImplicitTreap"s into one
+    // lhs and rhs are becoming empty
     [[ nodiscard ]] static ImplicitTreap<T> merge(ImplicitTreap<T>& lhs, ImplicitTreap<T>& rhs);
 
     T& getValue(size_t pos);
@@ -54,7 +57,9 @@ public:
     ImplicitTreap<T>& operator = (ImplicitTreap<T>&& other);
 
 private:
-    static void copy(ImplicitTreapNode<T>* to, ImplicitTreapNode<T>* from);
+    explicit ImplicitTreap(ImplicitTreapNode<T>* otherRoot);
+
+    static ImplicitTreapNode<T>* copy(ImplicitTreapNode<T>* to, ImplicitTreapNode<T>* from);
 
     static std::pair<ImplicitTreapNode<T>*, ImplicitTreapNode<T>*> split(ImplicitTreapNode<T>* curNode, size_t toCut);
 
