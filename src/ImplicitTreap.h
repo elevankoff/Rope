@@ -11,12 +11,18 @@ public:
     // Constructors
     ImplicitTreap();
 
-    explicit ImplicitTreap(std::vector<T>& values);
+    explicit ImplicitTreap(std::vector<T>&& values);
+
+    explicit ImplicitTreap(const std::vector<T>& values);
 
     explicit ImplicitTreap(ImplicitTreapNode<T>* otherRoot);
 
+    explicit ImplicitTreap(const ImplicitTreap& other);
+
+    explicit ImplicitTreap(ImplicitTreap&& other);
+
     // Creates node with the current "ImplicitTreap"'s random function
-    ImplicitTreapNode<T>* createNode(const T& value);
+    [[ nodiscard ]] static ImplicitTreapNode<T>* createNode(const T& value);
 
     // Returns the number of elements in the current "ImplicitTreap"
     size_t getSize();
@@ -31,35 +37,40 @@ public:
     void erase(size_t pos);
 
     // Returns two "ImplicitTreap"s: "left" with first x elements, "right" with others
-    std::pair<ImplicitTreap<T>&, ImplicitTreap<T>&> split(size_t x);
+    [[ nodiscard ]] std::pair<ImplicitTreap<T>, ImplicitTreap<T>> split(size_t x);
 
     // Merges two "ImplicitTreap"s into one
-    ImplicitTreap<T> merge(ImplicitTreap<T>& lhs, ImplicitTreap<T>& rhs);
+    [[ nodiscard ]] static ImplicitTreap<T> merge(ImplicitTreap<T>& lhs, ImplicitTreap<T>& rhs);
 
     T& getValue(size_t pos);
 
     const T& getValue(size_t pos) const;
 
-    // Returns random function of the current "ImplicitTreap"
-    std::minstd_rand& getRandFunc();
+    // Returns default random function, which is used in "createNode" method for generating "priority"
+    static std::mt19937 getRandFunc();
+
+    ImplicitTreap<T>& operator = (const ImplicitTreap<T>& other);
+
+    ImplicitTreap<T>& operator = (ImplicitTreap<T>&& other);
 
 private:
-    std::pair<ImplicitTreapNode<T>*, ImplicitTreapNode<T>*> split(ImplicitTreapNode<T>* curNode, size_t toCut);
+    static void copy(ImplicitTreapNode<T>* to, ImplicitTreapNode<T>* from);
 
-    ImplicitTreapNode<T>* merge(ImplicitTreapNode<T>* lhs, ImplicitTreapNode<T>* rhs);
+    static std::pair<ImplicitTreapNode<T>*, ImplicitTreapNode<T>*> split(ImplicitTreapNode<T>* curNode, size_t toCut);
 
-    ImplicitTreapNode<T>* insert(ImplicitTreapNode<T>* curRoot, size_t pos, const T& value);
+    static ImplicitTreapNode<T>* merge(ImplicitTreapNode<T>* lhs, ImplicitTreapNode<T>* rhs);
+
+    static ImplicitTreapNode<T>* insert(ImplicitTreapNode<T>* curRoot, size_t pos, const T& value);
 
     void clear(ImplicitTreapNode<T>* curNode);
 
 private:
     ImplicitTreapNode<T>* root;
-    std::minstd_rand ImplicitTreapRandom;
+    static std::mt19937 ImplicitTreapRandom;
 
 public:
     ~ImplicitTreap();
 };
-
 #include "ImplicitTreap.cpp"
 
 #endif //ROPE_IMPLICITTREAP_H

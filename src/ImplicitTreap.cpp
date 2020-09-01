@@ -1,19 +1,24 @@
 #ifndef ROPE_IMPLICITTREAP_CPP
 #define ROPE_IMPLICITTREAP_CPP
 
-#include <stdexcept>
+#include <exception>
 #include "ImplicitTreap.h"
+#include <stdexcept>
 
 template<typename T>
 ImplicitTreap<T>::ImplicitTreap()
-    : ImplicitTreapRandom(std::chrono::steady_clock::now().time_since_epoch().count())
-    , root(nullptr) {}
+    : root(nullptr) {}
 
 
 template<typename T>
-ImplicitTreap<T>::ImplicitTreap(std::vector<T>& values)
-    : ImplicitTreapRandom(std::chrono::steady_clock::now().time_since_epoch().count())
-    , root(nullptr){
+ImplicitTreap<T>::ImplicitTreap(std::vector<T>&& values)
+    : root(nullptr) {
+    for (size_t i = 0; i < values.size(); i++) insert(i, values[i]);
+}
+
+template<typename T>
+ImplicitTreap<T>::ImplicitTreap(const std::vector<T>& values)
+    : root(nullptr){
     for (size_t i = 0; i < values.size(); i++) insert(i, values[i]);
 }
 
@@ -22,9 +27,19 @@ template<typename T>
 ImplicitTreap<T>::ImplicitTreap(ImplicitTreapNode<T>* otherRoot)
     : root(otherRoot) {}
 
+
+template<typename T>
+ImplicitTreap<T>::ImplicitTreap(const ImplicitTreap& other)
+    : root(other.root) {}
+
+template<typename T>
+ImplicitTreap<T>::ImplicitTreap(ImplicitTreap&& other)
+    : root(other.root) { other.root = nullptr; }
+
 template<typename T>
 ImplicitTreapNode<T>* ImplicitTreap<T>::createNode(const T& value) {
-    int priority = ImplicitTreapRandom();
+    std::mt19937 randomFunc = getRandFunc();
+    int priority = randomFunc();
     auto result = new ImplicitTreapNode<T>(priority, value);
     return result;
 }
@@ -108,14 +123,16 @@ ImplicitTreapNode<T>* ImplicitTreap<T>::insert(ImplicitTreapNode<T>* curRoot, si
 }
 
 template<typename T>
-std::pair<ImplicitTreap<T>&, ImplicitTreap<T>&> ImplicitTreap<T>::split(size_t x) {
+std::pair<ImplicitTreap<T>, ImplicitTreap<T>> ImplicitTreap<T>::split(size_t x) {
     auto p = split(root, x);
+    this->root = nullptr;
     return std::make_pair(ImplicitTreap(p.first), ImplicitTreap(p.second));
 }
 
 template<typename T>
 ImplicitTreap<T> ImplicitTreap<T>::merge(ImplicitTreap<T>& lhs, ImplicitTreap<T>& rhs) {
-    ImplicitTreapNode<T>* newRoot = merge(lhs.getRoot(), rhs.getRoot());
+    ImplicitTreapNode<T>* newRoot = ImplicitTreap<T>::merge(lhs.getRoot(), rhs.getRoot());
+    lhs.root = rhs.root = nullptr;
     return ImplicitTreap(newRoot);
 }
 
@@ -148,8 +165,9 @@ const T& ImplicitTreap<T>::getValue(size_t pos) const {
 }
 
 template<typename T>
-std::minstd_rand& ImplicitTreap<T>::getRandFunc() {
-    return ImplicitTreapRandom;
+std::mt19937 ImplicitTreap<T>::getRandFunc() {
+    std::mt19937 result(std::chrono::steady_clock::now().time_since_epoch().count());
+    return result;
 }
 
 template<typename T>
@@ -165,5 +183,30 @@ ImplicitTreap<T>::~ImplicitTreap() {
     clear(root);
 }
 
+template<typename T>
+void ImplicitTreap<T>::copy(ImplicitTreapNode<T>* to, ImplicitTreapNode<T>* from) {
+    if (!from) return;
+    if (to != nullptr) throw std::logic_error("Copying inside of not empty ImplicitTreap");
+    to = createNode(from->getValue());
+    copy(to->left, from->left);
+    copy(to->right, from->right);
+}
+
+template<typename T>
+ImplicitTreap<T>& ImplicitTreap<T>::operator=(const ImplicitTreap<T>& other) {
+    if (this != &other) {
+        clear(this->root);
+        this->root = nullptr;
+        copy(this->root, other.root);
+    }
+    return *this;
+}
+
+template<typename T>
+ImplicitTreap<T>& ImplicitTreap<T>::operator=(ImplicitTreap&& other) {
+    this->root = other.root;
+    other.root = nullptr;
+    return *this;
+}
 
 #endif //ROPE_IMPLICITTREAP_CPP

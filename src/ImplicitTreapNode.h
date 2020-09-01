@@ -9,6 +9,8 @@ template<typename T>
 class ImplicitTreapNode {
 public:
     // Constructors
+    ImplicitTreapNode(int priority, T&& value);
+
     ImplicitTreapNode(int priority, const T& value);
 
     // Returns "node"'s subtree size
