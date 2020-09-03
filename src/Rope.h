@@ -23,36 +23,38 @@ public:
     template <typename It>
     Rope(It first, It last);
 
-    Rope<T> concat(Rope& lhs, Rope& rhs);
+    void concat(Rope& other);
 
-    std::pair<Rope<T>, Rope<T>> split(size_t toCut);
+    [[ nodiscard ]] std::pair<Rope<T>, Rope<T>> split(size_t toCut);
 
     void erase(size_t pos);
 
     void erase(size_t pos, size_t cnt);
 
-    void insert(size_t pos, const T& val);
+    void insert(size_t pos, const T& value);
 
     template<typename It>
     void insert(size_t pos, It first, It last);
 
     void insert(size_t pos, Rope& otherRope);
 
-    bool operator == (Rope<T>& otherRope) const;
-
-    bool operator != (Rope<T>& otherRope) const;
-
-    bool operator < (Rope<T>& otherRope) const;
-
-    bool operator <= (Rope<T>& otherRope) const;
-
-    bool operator > (Rope<T>& otherRope) const;
-
-    bool operator >= (Rope<T>& otherRope) const;
+    size_t getSize() const;
 
     T& operator [](int pos);
 
     const T& operator[](int pos) const;
+
+    bool operator == (const Rope<T>& otherRope) const;
+
+    bool operator != (const Rope<T>& otherRope) const;
+
+    bool operator < (const Rope<T>& otherRope) const;
+
+    bool operator <= (const Rope<T>& otherRope) const;
+
+    bool operator > (const Rope<T>& otherRope) const;
+
+    bool operator >= (const Rope<T>& otherRope) const;
 
 private:
     ImplicitTreap<T> impTreap;

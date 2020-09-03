@@ -19,8 +19,13 @@ public:
 
     ImplicitTreap(ImplicitTreap<T>&& other);
 
+    template<typename It>
+    ImplicitTreap(It first, It last);
+
     // Creates node with the current "ImplicitTreap"'s random function
     [[ nodiscard ]] static ImplicitTreapNode<T>* createNode(const T& value);
+
+    [[ nodiscard ]] static ImplicitTreapNode<T>* creatNode(T&& value);
 
     // Returns the number of elements in the current "ImplicitTreap"
     size_t getSize();
@@ -30,6 +35,10 @@ public:
 
     // Inserts an element in "pos" position
     void insert(size_t pos, const T& value);
+
+    void insert(size_t pos, T&& value);
+
+    void insert(size_t pos, ImplicitTreap<T>& other);
 
     // Deletes elements in the interval [pos, pos + cnt)
     void erase(size_t pos, size_t cnt);
@@ -66,6 +75,8 @@ private:
     static ImplicitTreapNode<T>* merge(ImplicitTreapNode<T>* lhs, ImplicitTreapNode<T>* rhs);
 
     static ImplicitTreapNode<T>* insert(ImplicitTreapNode<T>* curRoot, size_t pos, const T& value);
+
+    static ImplicitTreapNode<T>* insert(ImplicitTreapNode<T>* curRoot, size_t pos, T&& value);
 
     void clear(ImplicitTreapNode<T>* curNode);
 

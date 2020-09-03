@@ -30,11 +30,21 @@ ImplicitTreap<T>::ImplicitTreap(ImplicitTreapNode<T>* otherRoot)
 
 template<typename T>
 ImplicitTreap<T>::ImplicitTreap(const ImplicitTreap<T>& other)
-    : root(other.root) {}
+    : root(nullptr) {
+    root = copy(root, other.root);
+}
 
 template<typename T>
 ImplicitTreap<T>::ImplicitTreap(ImplicitTreap<T>&& other)
     : root(other.root) { other.root = nullptr; }
+
+
+template<typename T>
+template<typename It>
+ImplicitTreap<T>::ImplicitTreap(It first, It last)
+    : root(nullptr) {
+    while (first != last) insert(getSize(), *first++);
+}
 
 template<typename T>
 ImplicitTreapNode<T>* ImplicitTreap<T>::createNode(const T& value) {
@@ -43,6 +53,15 @@ ImplicitTreapNode<T>* ImplicitTreap<T>::createNode(const T& value) {
     auto result = new ImplicitTreapNode<T>(priority, value);
     return result;
 }
+
+template<typename T>
+ImplicitTreapNode<T>* ImplicitTreap<T>::creatNode(T&& value) {
+    std::mt19937 randomFunc = getRandFunc();
+    int priority = randomFunc();
+    auto result = new ImplicitTreapNode<T>(priority, std::move(value));
+    return result;
+}
+
 
 template<typename T>
 size_t ImplicitTreap<T>::getSize() {
@@ -60,6 +79,24 @@ void ImplicitTreap<T>::insert(size_t pos, const T& value) {
         throw std::out_of_range("Attempt to insert into non-existent position");
 
     root = insert(root, pos, value);
+}
+
+template<typename T>
+void ImplicitTreap<T>::insert(size_t pos, T&& value) {
+    if (pos > getSize())
+        throw std::out_of_range("Attempt to insert into non-existent position");
+    root = insert(root, pos, std::move(value));
+}
+
+template<typename T>
+void ImplicitTreap<T>::insert(size_t pos, ImplicitTreap<T>& other) {
+    if (pos > getSize())
+        throw std::out_of_range("Attempt to insert into non-existent position");
+
+    auto p = (*this).split(pos);
+    *this = merge(p.first, other);
+    *this = merge(*this, other);
+    *this = merge(*this, p.second);
 }
 
 template<typename T>
@@ -127,6 +164,17 @@ ImplicitTreapNode<T>* ImplicitTreap<T>::insert(ImplicitTreapNode<T>* curRoot, si
     ImplicitTreapNode<T>* left = p.first;
     ImplicitTreapNode<T>* right = p.second;
     auto newNode = createNode(value);
+    auto leftMergeResult = merge(left, newNode);
+    return merge(leftMergeResult, right);
+}
+
+
+template<typename T>
+ImplicitTreapNode<T>* ImplicitTreap<T>::insert(ImplicitTreapNode<T>* curRoot, size_t pos, T&& value) {
+    auto p = split(curRoot, pos);
+    ImplicitTreapNode<T>* left = p.first;
+    ImplicitTreapNode<T>* right = p.second;
+    auto newNode = createNode(std::move(value));
     auto leftMergeResult = merge(left, newNode);
     return merge(leftMergeResult, right);
 }
