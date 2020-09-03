@@ -16,7 +16,7 @@ public:
 
     explicit Rope(std::vector<T>&& values);
 
-    explicit Rope(const std::string&& s);
+    explicit Rope(const std::string& s);
 
     explicit Rope(std::string&& s);
 
