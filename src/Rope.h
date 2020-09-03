@@ -26,6 +26,8 @@ public:
 
     void push_back(const T& value);
 
+    void pop_back();
+
     //  Concatenate current rope with "other" ("other" rope becomes empty)
     void concat(const Rope& otherRope);
 

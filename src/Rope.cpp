@@ -42,6 +42,12 @@ void Rope<T>::push_back(const T& value) {
     impTreap.insert(getSize(), value);
 }
 
+
+template<typename T>
+void Rope<T>::pop_back() {
+    impTreap.erase(getSize() - 1);
+}
+
 template<typename T>
 void Rope<T>::concat(const Rope& otherRope) {
     size_t n = otherRope.getSize();
