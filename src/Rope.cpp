@@ -3,7 +3,6 @@
 
 #include "Rope.h"
 
-
 template<typename T>
 Rope<T>::Rope()
     : impTreap() {}
@@ -30,17 +29,32 @@ Rope<T>::Rope(const std::string& s)
 
 template<typename T>
 Rope<T>::Rope(std::string&& s)
-    : impTreap(std::move(s)) {}
+    : impTreap(s.begin(), s.end()) {}
 
 template<typename T>
 template<typename It>
 Rope<T>::Rope(It first, It last)
     : impTreap(first, last) {}
 
+
 template<typename T>
-void Rope<T>::concat(Rope& other) {
-    impTreap = ImplicitTreap<T>::merge((*this).impTreap, other.impTreap);
+void Rope<T>::push_back(const T& value) {
+    impTreap.insert(getSize(), value);
 }
+
+template<typename T>
+void Rope<T>::concat(const Rope& otherRope) {
+    size_t n = otherRope.getSize();
+    for (size_t i = 0; i < n; i++) {
+        this->push_back(otherRope[i]);
+    }
+}
+
+template<typename T>
+void Rope<T>::concat(Rope&& otherRope) {
+    impTreap = ImplicitTreap<T>::merge(impTreap, otherRope.impTreap);
+}
+
 
 template<typename T>
 std::pair<Rope<T>, Rope<T>> Rope<T>::split(size_t toCut) {
@@ -73,7 +87,7 @@ void Rope<T>::insert(size_t pos, It first, It last) {
 }
 
 template<typename T>
-void Rope<T>::insert(size_t pos, Rope& otherRope) {
+void Rope<T>::insert(size_t pos, const Rope& otherRope) {
     impTreap.insert(pos, otherRope.impTreap);
 }
 
@@ -89,11 +103,11 @@ T& Rope<T>::operator[](int pos) {
 
 template<typename T>
 const T& Rope<T>::operator[](int pos) const {
-    return impTreap.getvalue(pos);
+    return impTreap.getValue(pos);
 }
 
 template<typename T>
-bool Rope<T>::operator==(const Rope<T>& otherRope) const {
+bool Rope<T>::operator == (const Rope<T>& otherRope) const {
     if (otherRope.getSize() != getSize()) return false;
     size_t n = getSize();
     for (size_t i = 0; i < n; i++) {
@@ -103,12 +117,12 @@ bool Rope<T>::operator==(const Rope<T>& otherRope) const {
 }
 
 template<typename T>
-bool Rope<T>::operator!=(const Rope<T>& otherRope) const {
+bool Rope<T>::operator != (const Rope<T>& otherRope) const {
     return !((*this) == otherRope);
 }
 
 template<typename T>
-bool Rope<T>::operator<(const Rope<T>& otherRope) const {
+bool Rope<T>::operator < (const Rope<T>& otherRope) const {
     size_t n = getSize(), m = otherRope();
     std::vector<T> my_v(getSize()), other_v(otherRope.getSize());
     for (size_t i = 0; i < n; i++) my_v.push_back((*this)[i]);
@@ -117,18 +131,32 @@ bool Rope<T>::operator<(const Rope<T>& otherRope) const {
 }
 
 template<typename T>
-bool Rope<T>::operator<=(const Rope<T>& otherRope) const {
+bool Rope<T>::operator <= (const Rope<T>& otherRope) const {
     return (*this) == otherRope || (*this) < otherRope;
 }
 
 template<typename T>
-bool Rope<T>::operator>(const Rope<T>& otherRope) const {
+bool Rope<T>::operator > (const Rope<T>& otherRope) const {
     return !((*this) <= otherRope);
 }
 
 template<typename T>
-bool Rope<T>::operator>=(const Rope <T>& otherRope) const {
+bool Rope<T>::operator >= (const Rope <T>& otherRope) const {
     return !((*this) < otherRope);
 }
+
+template<typename T>
+Rope<T>& Rope<T>::operator = (const Rope<T>& otherRope) {
+    impTreap = otherRope.impTreap;
+    return *this;
+}
+
+template<typename T>
+Rope<T>& Rope<T>::operator=(Rope<T>&& otherRope) {
+    impTreap = std::move(otherRope.impTreap);
+    return *this;
+}
+
+
 
 #endif //ROPE_ROPE_CPP

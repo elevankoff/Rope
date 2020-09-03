@@ -28,7 +28,7 @@ public:
     [[ nodiscard ]] static ImplicitTreapNode<T>* creatNode(T&& value);
 
     // Returns the number of elements in the current "ImplicitTreap"
-    size_t getSize();
+    size_t getSize() const;
 
     // Returns root of the current "ImplicitTreap"
     ImplicitTreapNode<T>* getRoot() const;
@@ -38,7 +38,7 @@ public:
 
     void insert(size_t pos, T&& value);
 
-    void insert(size_t pos, ImplicitTreap<T>& other);
+    void insert(size_t pos, const ImplicitTreap<T>& other);
 
     // Deletes elements in the interval [pos, pos + cnt)
     void erase(size_t pos, size_t cnt);
@@ -77,6 +77,8 @@ private:
     static ImplicitTreapNode<T>* insert(ImplicitTreapNode<T>* curRoot, size_t pos, const T& value);
 
     static ImplicitTreapNode<T>* insert(ImplicitTreapNode<T>* curRoot, size_t pos, T&& value);
+
+    static T& getValue(ImplicitTreapNode<T>* curRoot, size_t pos);
 
     void clear(ImplicitTreapNode<T>* curNode);
 

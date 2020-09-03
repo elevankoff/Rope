@@ -64,7 +64,7 @@ ImplicitTreapNode<T>* ImplicitTreap<T>::creatNode(T&& value) {
 
 
 template<typename T>
-size_t ImplicitTreap<T>::getSize() {
+size_t ImplicitTreap<T>::getSize() const {
     return ImplicitTreapNode<T>::getSize(root);
 }
 
@@ -89,14 +89,13 @@ void ImplicitTreap<T>::insert(size_t pos, T&& value) {
 }
 
 template<typename T>
-void ImplicitTreap<T>::insert(size_t pos, ImplicitTreap<T>& other) {
+void ImplicitTreap<T>::insert(size_t pos, const ImplicitTreap<T>& other) {
     if (pos > getSize())
         throw std::out_of_range("Attempt to insert into non-existent position");
-
-    auto p = (*this).split(pos);
-    *this = merge(p.first, other);
-    *this = merge(*this, other);
-    *this = merge(*this, p.second);
+    size_t n = other.getSize();
+    for (size_t i = 0; i < n; i++, pos++) {
+        insert(pos, other.getValue(i));
+    }
 }
 
 template<typename T>
@@ -179,6 +178,18 @@ ImplicitTreapNode<T>* ImplicitTreap<T>::insert(ImplicitTreapNode<T>* curRoot, si
     return merge(leftMergeResult, right);
 }
 
+
+template<typename T>
+T& ImplicitTreap<T>::getValue(ImplicitTreapNode<T>* curRoot, size_t pos) {
+    size_t leftSize = ImplicitTreapNode<T>::getSize(curRoot->left);
+    if (leftSize == pos) return curRoot->getValue();
+    if (pos > leftSize) {
+        return getValue(curRoot->right, pos - leftSize - 1);
+    } else {
+        return getValue(curRoot->left, pos);
+    }
+}
+
 template<typename T>
 std::pair<ImplicitTreap<T>, ImplicitTreap<T>> ImplicitTreap<T>::split(size_t x) {
     auto p = split(root, x);
@@ -198,18 +209,7 @@ T& ImplicitTreap<T>::getValue(size_t pos) {
     if (pos >= getSize())
         throw std::out_of_range("Attempt to get value of non-existent element");
 
-    auto p1 = split(root, pos + 1);
-    ImplicitTreapNode<T>* left1 = p1.first;
-    ImplicitTreapNode<T>* right1 = p1.second;
-    auto p2 = split(left1, pos);
-
-    ImplicitTreapNode<T>* left2 = p2.first;
-    ImplicitTreapNode<T>* right2 = p2.second;
-
-    T& result = p2.second->getValue();
-    left1 = merge(left2, right2);
-    root = merge(left1, right1);
-    return result;
+    return getValue(root, pos);
 }
 
 template<typename T>
@@ -217,8 +217,7 @@ const T& ImplicitTreap<T>::getValue(size_t pos) const {
     if (pos >= getSize())
         throw std::out_of_range("Attempt to get value of non-existent element");
 
-    const T& result = getValue(pos);
-    return result;
+    return getValue(root, pos);
 }
 
 template<typename T>
@@ -265,5 +264,6 @@ ImplicitTreap<T>& ImplicitTreap<T>::operator=(ImplicitTreap<T>&& other) {
     other.root = nullptr;
     return *this;
 }
+
 
 #endif //ROPE_IMPLICITTREAP_CPP
