@@ -202,5 +202,6 @@ int main() {
     TestImplicitTreapNode();
     TestImplicitTreap();
     TestRope();
+
     return 0;
 }

@@ -33,6 +33,8 @@ public:
     // Returns root of the current "ImplicitTreap"
     ImplicitTreapNode<T>* getRoot() const;
 
+    void setRoot(ImplicitTreapNode<T>* newRoot);
+
     // Inserts an element in "pos" position
     void insert(size_t pos, const T& value);
 

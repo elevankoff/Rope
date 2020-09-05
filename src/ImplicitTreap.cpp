@@ -265,5 +265,10 @@ ImplicitTreap<T>& ImplicitTreap<T>::operator=(ImplicitTreap<T>&& other) {
     return *this;
 }
 
+template<typename T>
+void ImplicitTreap<T>::setRoot(ImplicitTreapNode<T>* newRoot) {
+    root = newRoot;
+}
+
 
 #endif //ROPE_IMPLICITTREAP_CPP

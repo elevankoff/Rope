@@ -13,7 +13,9 @@ Rope<T>::Rope(const Rope& otherRope)
 
 template<typename T>
 Rope<T>::Rope(Rope&& otherRope)
-    : impTreap(std::move(otherRope.impTreap)) {}
+    : impTreap(std::move(otherRope.impTreap)) {
+    otherRope.impTreap.setRoot(nullptr);
+}
 
 template<typename T>
 Rope<T>::Rope(const std::vector<T>& values)
@@ -95,6 +97,14 @@ void Rope<T>::insert(size_t pos, It first, It last) {
 template<typename T>
 void Rope<T>::insert(size_t pos, const Rope& otherRope) {
     impTreap.insert(pos, otherRope.impTreap);
+}
+
+template<typename T>
+void Rope<T>::insert(size_t pos, Rope&& otherRope) {
+    auto p = split(pos);
+    p.first.concat(std::move(otherRope));
+    p.first.concat(std::move(p.second));
+    this = std::move(p.first);
 }
 
 template<typename T>

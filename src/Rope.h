@@ -53,6 +53,8 @@ public:
     // Inserts "otherRope" before position "pos" ("otherRope" is still usable)
     void insert(size_t pos, const Rope& otherRope);
 
+    void insert(size_t pos, Rope&& otherRope);
+
     // Returns number of elements in the current rope
     size_t getSize() const;
 
