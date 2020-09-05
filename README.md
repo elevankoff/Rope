@@ -3,17 +3,6 @@
 Rope is a data structure for fast manipulating with large strings. You can fast split rope into two ropes, concatenate two ropes into one, insert another rope or element, get and delete the element at a certain position. And all those operations have ***O(log(n))*** asymptotic.  
 My implementation is based on Treap data structure with implicit key, so you can manipulate with sequences of any type you want.
 
-More related information about these data structures you can find here:  
-`Rope:`  
-[[EN] Wikipedia](https://en.wikipedia.org/wiki/Rope_(data_structure))  
-[[EN] Opengenus](https://iq.opengenus.org/rope-data-structure/)  
-[[RU] Habr.com](https://habr.com/ru/post/144736/)  
-[[RU] Qwe.wiki](https://ru.qwe.wiki/wiki/Rope_(data_structure))  
-`Treap and Implicit Treap:`  
-[[EN] Cp-algorithms](https://cp-algorithms.com/data_structures/treap.html)  
-[[RU] Emaxx](https://e-maxx.ru/algo/treap)  
-[[RU] Habr.com](https://habr.com/ru/post/102364/)
-
 ## Usage
 
 ```cpp
@@ -85,3 +74,16 @@ Please make sure to update tests as appropriate.
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
+
+## Information
+
+More related information about these data structures you can find here:  
+`Rope:`  
+[[EN] Wikipedia](https://en.wikipedia.org/wiki/Rope_(data_structure))  
+[[EN] Opengenus](https://iq.opengenus.org/rope-data-structure/)  
+[[RU] Habr.com](https://habr.com/ru/post/144736/)  
+[[RU] Qwe.wiki](https://ru.qwe.wiki/wiki/Rope_(data_structure))  
+`Treap and Implicit Treap:`  
+[[EN] Cp-algorithms](https://cp-algorithms.com/data_structures/treap.html)  
+[[RU] Emaxx](https://e-maxx.ru/algo/treap)  
+[[RU] Habr.com](https://habr.com/ru/post/102364/)
