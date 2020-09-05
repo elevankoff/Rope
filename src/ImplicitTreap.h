@@ -2,6 +2,7 @@
 #define ROPE_IMPLICITTREAP_H
 
 #include <vector>
+#include <iostream>
 
 #include "ImplicitTreapNode.h"
 

@@ -53,7 +53,11 @@ public:
     // Inserts "otherRope" before position "pos" ("otherRope" is still usable)
     void insert(size_t pos, const Rope& otherRope);
 
+    // Inserts "otherRope" before position "pos" ("otherRope" is not more usable)
     void insert(size_t pos, Rope&& otherRope);
+
+    // prints "cnt" elements form position "from"
+    void print(std::ostream& os, size_t from, size_t cnt, const std::string& delim = " ");
 
     // Returns number of elements in the current rope
     size_t getSize() const;
@@ -77,6 +81,13 @@ public:
     Rope<T>& operator = (const Rope<T>& otherRope);
 
     Rope<T>& operator = (Rope<T>&& otherRope);
+
+    std::vector<T> toVec() const;
+
+private:
+    static void print(std::ostream& os, ImplicitTreapNode<T>* curRoot, const std::string& delim);
+
+    static void toVec(ImplicitTreapNode<T>* curNode, std::vector<T>& result);
 
 private:
     ImplicitTreap<T> impTreap;

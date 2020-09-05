@@ -104,7 +104,18 @@ void Rope<T>::insert(size_t pos, Rope&& otherRope) {
     auto p = split(pos);
     p.first.concat(std::move(otherRope));
     p.first.concat(std::move(p.second));
-    this = std::move(p.first);
+    *this = std::move(p.first);
+}
+
+
+template<typename T>
+void Rope<T>::print(std::ostream& os, size_t from, size_t cnt, const std::string& delim) {
+    auto p1 = split(from);
+    auto p2 = p1.second.split(cnt);
+    print(os, p2.first.impTreap.getRoot(), delim);
+    p1.first.concat(std::move(p2.first));
+    p1.first.concat(std::move(p2.second));
+    *this = std::move(p1.first);
 }
 
 template<typename T>
@@ -139,10 +150,7 @@ bool Rope<T>::operator != (const Rope<T>& otherRope) const {
 
 template<typename T>
 bool Rope<T>::operator < (const Rope<T>& otherRope) const {
-    size_t n = getSize(), m = otherRope();
-    std::vector<T> my_v(getSize()), other_v(otherRope.getSize());
-    for (size_t i = 0; i < n; i++) my_v.push_back((*this)[i]);
-    for (size_t i = 0; i < m; i++) other_v.push_back(otherRope[i]);
+    std::vector<T> my_v = toVec(), other_v = otherRope.toVec();
     return my_v < other_v;
 }
 
@@ -173,6 +181,29 @@ Rope<T>& Rope<T>::operator=(Rope<T>&& otherRope) {
     return *this;
 }
 
+template<typename T>
+std::vector<T> Rope<T>::toVec() const {
+    std::vector<T> result;
+    toVec(impTreap.getRoot(), result);
+    return result;
+}
+
+
+template<typename T>
+void Rope<T>::print(std::ostream& os, ImplicitTreapNode<T>* curRoot, const std::string& delim) {
+    if (!curRoot) return;
+    print(os, curRoot->left, delim);
+    os << curRoot->getValue() << delim;
+    print(os, curRoot->right, delim);
+}
+
+template<typename T>
+void Rope<T>::toVec(ImplicitTreapNode<T>* curNode, std::vector<T>& result) {
+    if (!curNode) return;
+    toVec(curNode->left, result);
+    result.push_back(curNode->getValue());
+    toVec(curNode->right, result);
+}
 
 
 #endif //ROPE_ROPE_CPP
