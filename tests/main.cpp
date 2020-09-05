@@ -194,6 +194,14 @@ void TestRope() {
     a.pop_back();
     a.pop_back();
     assert(a == Rope<char>("ABcwabcdABaacwab"));
+    Rope<char> b("asdads");
+    Rope<char> c("basdas");
+    assert(b < c);
+    assert(b <= c);
+    assert(c > b);
+    assert(c >= b);
+    assert(!(c == b));
+    assert(c != b);
     std::cout << "Rope is OK \n";
     std::cout << "--------------\n";
 }
