@@ -16,7 +16,7 @@ More related information about these data structures you can find here:
 
 ## Usage
 
-```{C++}
+```cpp
 #include "Rope.h"
 
 int main() {
