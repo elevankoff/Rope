@@ -42,7 +42,7 @@ public:
     size_t size() const;
 
     // Returns root of the current "ImplicitTreap"
-    ImplicitTreapNode<T>* getRoot() const;
+    Node<T> getRoot() const;
 
     void setRoot(Node<T> newRoot);
 
@@ -68,9 +68,9 @@ public:
     [[ nodiscard ]] static ImplicitTreap<T> merge(ImplicitTreap<T>& lhs, ImplicitTreap<T>& rhs);
 
     // Creates node with the current "ImplicitTreap"'s random function
-    [[ nodiscard ]] static ImplicitTreapNode<T>* createNode(const T& value, std::mt19937& ImplicitTreapRandom);
+    [[ nodiscard ]] static Node<T> createNode(const T& value, std::mt19937& ImplicitTreapRandom);
 
-    [[ nodiscard ]] static ImplicitTreapNode<T>* createNode(T&& value, std::mt19937& ImplicitTreapRandom);
+    [[ nodiscard ]] static Node<T> createNode(T&& value, std::mt19937& ImplicitTreapRandom);
 
     T& getValue(size_t pos);
 
