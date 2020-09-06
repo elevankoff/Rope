@@ -1,13 +1,12 @@
 #include <iostream>
 #include <cassert>
 #include "../src/Rope.h"
-
 template <typename T>
-void toVec(ImplicitTreapNode<T>* curNode, std::vector<T>& result) {
-    if (!curNode) return;
-    toVec(curNode->left, result);
+void toVec(Node<T>   curNode, std::vector<T>& result) {
+    if (!curNode) { return; }
+    toVec(curNode->getLeft(), result);
     result.push_back(curNode->getValue());
-    toVec(curNode->right, result);
+    toVec(curNode->getRight(), result);
 }
 
 template <typename T>
@@ -21,9 +20,11 @@ void TestImplicitTreapNode() {
     std::cout << "-----------------\n";
     std::cout << "ImplicitTreapNode testing: \n";
     ImplicitTreapNode<int> tn(10, 42), tnl(1, 2), tnr(2, 3);
+
+    /*
     tn.left = &tnl;
     tn.right = &tnr;
-    tn.updateSize();
+    tn.update();
     assert(tn.getPriority() == 10);
     assert(tn.left->getPriority() == tnl.getPriority());
     assert(tn.right->getPriority() == tnr.getPriority());
@@ -36,14 +37,15 @@ void TestImplicitTreapNode() {
     assert(tn.getValue() == 30);
     std::cout << "Value is OK \n";
 
-    assert(tn.getSize() == 3);
-    assert(tnl.getSize() == 1);
-    assert(tnr.getSize() == 1);
+    assert(tn.size() == 3);
+    assert(tnl.size() == 1);
+    assert(tnr.size() == 1);
     ImplicitTreapNode<int> tn1(tn);
-    assert(tn1.getSize() == 3);
-    assert(tn.getSize() == 3);
+    assert(tn1.size() == 3);
+    assert(tn.size() == 3);
 
     std::cout << "Size is OK \n";
+    */
     std::cout << "ImplicitTreapNode is OK\n";
     std::cout << "-----------------\n \n";
 }
@@ -54,34 +56,35 @@ void TestImplicitTreap() {
     std::vector<int> v = {1, 2, 3, 4, 5, 6};
     ImplicitTreap<int> t(v);
 
-    assert(t.getSize() == 6);
+    assert(t.size() == 6);
     for (size_t i = 0; i < v.size(); i++) {
         assert(t.getValue(i) == v[i]);
     }
+    assert(toVec(t) == std::vector<int>({1, 2, 3, 4, 5, 6}));
 
     t.erase(0);
     assert(toVec(t) == std::vector<int>({2, 3, 4, 5, 6}));
-    assert(t.getSize() == 5);
+    assert(t.size() == 5);
     t.erase(2);
     assert(toVec(t) == std::vector<int>({2, 3, 5, 6}));
-    assert(t.getSize() == 4);
+    assert(t.size() == 4);
     t.insert(3, 7);
-    assert(t.getSize() == 5);
+    assert(t.size() == 5);
     assert(toVec(t) == std::vector<int>({2, 3, 5, 7, 6}));
 
     auto p = t.split(2);
     assert(toVec(p.first) == std::vector<int>({2, 3}));
     assert(toVec(p.second) == std::vector<int>({5, 7, 6}));
 
-    assert(p.first.getSize() == 2);
-    assert(p.second.getSize() == 3);
+    assert(p.first.size() == 2);
+    assert(p.second.size() == 3);
 
     t = ImplicitTreap<int>::merge(p.first, p.second);
-    assert(t.getSize() == 5);
+    assert(t.size() == 5);
     assert(toVec(t) == std::vector<int>({2, 3, 5, 7, 6}));
     t = ImplicitTreap<int>(std::vector<int>({1, 2, 3, 4}));
     assert(t.getValue(2) == 3);
-    assert(t.getSize() == 4);
+    assert(t.size() == 4);
     t.erase(2);
     assert(toVec(t) == std::vector<int>({1, 2, 4}));
     ImplicitTreap<int> g(std::vector<int>({5, 6, 1}));
@@ -96,15 +99,15 @@ void TestImplicitTreap() {
     ImplicitTreap<int> t1;
     t1.insert(0, 1);
     t1.insert(1, 2);
-    assert(t1.getSize() == 2);
+    assert(t1.size() == 2);
     assert(toVec(t1) == std::vector<int>({1, 2}));
     t = t1;
-    assert(t1.getSize() == 2);
+    assert(t1.size() == 2);
     assert(toVec(t1) == std::vector<int>({1, 2}));
-    assert(t.getSize() == 2);
+    assert(t.size() == 2);
     assert(toVec(t) == std::vector<int>({1, 2}));
     t1 = ImplicitTreap<int>::merge(t, t1);
-    assert(t1.getSize() == 4);
+    assert(t1.size() == 4);
     assert(toVec(t1) == std::vector<int>({1, 2, 1, 2}));
 
     v = {1, 2, 5};
@@ -206,10 +209,50 @@ void TestRope() {
     std::cout << "--------------\n";
 }
 
+using namespace std::chrono;
+using namespace __gnu_cxx;
+#include <ext/rope>
+
+class Random {
+public:
+    Random(size_t a, size_t b) : generator(time(0)), distribution(a, b) {}
+public:
+    std::default_random_engine generator;
+    std::uniform_int_distribution<size_t> distribution;
+};
+
 int main() {
+    srand(time(0));
+        
     TestImplicitTreapNode();
     TestImplicitTreap();
     TestRope();
+
+    return 0;
+    auto start = high_resolution_clock::now();
+
+    std::vector<char> lines[1000];
+    for (size_t i = 0; i < 1000; i++) {
+        size_t size = rand() % 10000;
+        for (size_t j = 0; j < size; j++) {
+            lines[i].push_back(char('a' + rand()%26));
+        }
+    }
+
+
+    rope<char> sr[1000];
+    Rope<char> mr[1000];
+    for (size_t i = 0; i < 1000; i++) {
+        for (size_t j = 0; j < lines[i].size(); j++) {
+            //sr[i].push_back(lines[i][j]);
+            mr[i].push_back(lines[i][j]);
+        }
+    }
+
+    auto stop = high_resolution_clock::now();
+    auto duration = duration_cast<microseconds>(stop - start);
+    std::cout << duration.count() / 1'000'000.0;
+
 
     return 0;
 }
