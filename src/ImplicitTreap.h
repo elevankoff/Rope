@@ -6,15 +6,30 @@
 
 #include "ImplicitTreapNode.h"
 
+template<typename T>
+using Node = ImplicitTreapNode<T>*;
+
 template <typename T>
 class ImplicitTreap {
 public:
     // Constructors
+
+    // Must be called in all constructors
     ImplicitTreap();
 
-    explicit ImplicitTreap(std::vector<T>&& values);
+    template<typename Container>
+    explicit ImplicitTreap(const Container& values, size_t size);
 
-    explicit ImplicitTreap(const std::vector<T>& values);
+    template<typename Container>
+    ImplicitTreap(Container&& values, size_t size);
+
+    explicit ImplicitTreap(const std::vector<T>& v);
+
+    explicit ImplicitTreap(std::vector<T>&& v);
+
+    explicit ImplicitTreap(const std::string& s);
+
+    explicit ImplicitTreap(std::string&& s);
 
     ImplicitTreap(const ImplicitTreap<T>& other);
 
@@ -23,18 +38,13 @@ public:
     template<typename It>
     ImplicitTreap(It first, It last);
 
-    // Creates node with the current "ImplicitTreap"'s random function
-    [[ nodiscard ]] static ImplicitTreapNode<T>* createNode(const T& value);
-
-    [[ nodiscard ]] static ImplicitTreapNode<T>* creatNode(T&& value);
-
     // Returns the number of elements in the current "ImplicitTreap"
-    size_t getSize() const;
+    size_t size() const;
 
     // Returns root of the current "ImplicitTreap"
     ImplicitTreapNode<T>* getRoot() const;
 
-    void setRoot(ImplicitTreapNode<T>* newRoot);
+    void setRoot(Node<T> newRoot);
 
     // Inserts an element in "pos" position
     void insert(size_t pos, const T& value);
@@ -57,6 +67,11 @@ public:
     // lhs and rhs are becoming empty
     [[ nodiscard ]] static ImplicitTreap<T> merge(ImplicitTreap<T>& lhs, ImplicitTreap<T>& rhs);
 
+    // Creates node with the current "ImplicitTreap"'s random function
+    [[ nodiscard ]] static ImplicitTreapNode<T>* createNode(const T& value, std::mt19937& ImplicitTreapRandom);
+
+    [[ nodiscard ]] static ImplicitTreapNode<T>* createNode(T&& value, std::mt19937& ImplicitTreapRandom);
+
     T& getValue(size_t pos);
 
     const T& getValue(size_t pos) const;
@@ -69,29 +84,31 @@ public:
     ImplicitTreap<T>& operator = (ImplicitTreap<T>&& other);
 
 private:
-    explicit ImplicitTreap(ImplicitTreapNode<T>* otherRoot);
+    explicit ImplicitTreap(Node<T> otherRoot);
 
-    static ImplicitTreapNode<T>* copy(ImplicitTreapNode<T>* to, ImplicitTreapNode<T>* from);
+    static Node<T> copy(Node<T> to, Node<T> from, std::mt19937& ImplicitTreapRandom);
 
-    static std::pair<ImplicitTreapNode<T>*, ImplicitTreapNode<T>*> split(ImplicitTreapNode<T>* curNode, size_t toCut);
+    static std::pair<Node<T>, Node<T>> split(Node<T> curNode, size_t toCut);
 
-    static ImplicitTreapNode<T>* merge(ImplicitTreapNode<T>* lhs, ImplicitTreapNode<T>* rhs);
+    static Node<T> merge(Node<T> lhs, Node<T> rhs);
 
-    static ImplicitTreapNode<T>* insert(ImplicitTreapNode<T>* curRoot, size_t pos, const T& value);
+    static Node<T> insert(Node<T> curRoot, size_t pos, const T& value, std::mt19937& ImplicitTreapRandom);
 
-    static ImplicitTreapNode<T>* insert(ImplicitTreapNode<T>* curRoot, size_t pos, T&& value);
+    static Node<T> insert(Node<T> curRoot, size_t pos, T&& value, std::mt19937& ImplicitTreapRandom);
 
-    static T& getValue(ImplicitTreapNode<T>* curRoot, size_t pos);
+    static T& getValue(Node<T> curRoot, size_t pos);
 
-    void clear(ImplicitTreapNode<T>* curNode);
+    void clear(Node<T> curNode);
 
 private:
-    ImplicitTreapNode<T>* root;
-    static std::mt19937 ImplicitTreapRandom;
+    // RandomFunc class must have operator "()"
+    Node<T> root;
 
 public:
+    std::mt19937 ImplicitTreapRandom;
     ~ImplicitTreap();
 };
-#include "ImplicitTreap.cpp"
+
+#include "ImplicitTreap-inl.h"
 
 #endif //ROPE_IMPLICITTREAP_H

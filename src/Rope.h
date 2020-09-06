@@ -13,6 +13,12 @@ public:
 
     Rope(Rope&& otherRope);
 
+    template<typename Container>
+    explicit Rope(const Container& values, size_t size);
+
+    template<typename Container>
+    explicit Rope(Container&& values, size_t size);
+
     explicit Rope(const std::vector<T>& values);
 
     explicit Rope(std::vector<T>&& values);
@@ -62,9 +68,9 @@ public:
     // Returns number of elements in the current rope
     size_t getSize() const;
 
-    T& operator [](int pos);
+    T& operator [](size_t pos);
 
-    const T& operator[](int pos) const;
+    const T& operator[](size_t pos) const;
 
     bool operator == (const Rope<T>& otherRope) const;
 
@@ -85,15 +91,15 @@ public:
     std::vector<T> toVec() const;
 
 private:
-    static void print(std::ostream& os, ImplicitTreapNode<T>* curRoot, const std::string& delim);
+    static void print(std::ostream& os, Node<T> curRoot, const std::string& delim);
 
-    static void toVec(ImplicitTreapNode<T>* curNode, std::vector<T>& result);
+    static void toVec(Node<T> curNode, std::vector<T>& result);
 
 private:
     ImplicitTreap<T> impTreap;
 };
 
-#include "Rope.cpp"
+#include "Rope-inl.h"
 
 
 #endif //ROPE_ROPE_H
