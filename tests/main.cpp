@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cassert>
-#include "../src/Rope.h"
+#include "../include/Rope.h"
+
 template <typename T>
 void toVec(Node<T>   curNode, std::vector<T>& result) {
     if (!curNode) { return; }
@@ -223,7 +224,7 @@ public:
 
 int main() {
     srand(time(0));
-        
+
     TestImplicitTreapNode();
     TestImplicitTreap();
     TestRope();
@@ -244,8 +245,8 @@ int main() {
     Rope<char> mr[1000];
     for (size_t i = 0; i < 1000; i++) {
         for (size_t j = 0; j < lines[i].size(); j++) {
-            //sr[i].push_back(lines[i][j]);
-            mr[i].push_back(lines[i][j]);
+            sr[i].push_back(lines[i][j]);
+            //mr[i].push_back(lines[i][j]);
         }
     }
 
