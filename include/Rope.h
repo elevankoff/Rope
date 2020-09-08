@@ -62,7 +62,7 @@ public:
     // Inserts "otherRope" before position "pos" ("otherRope" is not more usable)
     void insert(size_t pos, Rope&& otherRope);
 
-    // prints "cnt" elements form position "from"
+    // prints "cnt" elements from position "from"
     void print(size_t from, size_t cnt, std::ostream& os = std::cout, const std::string& delim = " ");
 
     // Returns number of elements in the current rope
