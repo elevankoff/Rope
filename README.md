@@ -62,7 +62,6 @@ Lalita
 - ~~Make "print"-function more user-friendly~~
 - Implement iterators 
 - Add more tests
-- Build can be improved up to *O(n)*
 - ...
 
 ## Contributing
