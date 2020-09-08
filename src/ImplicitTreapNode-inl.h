@@ -54,11 +54,13 @@ const T& ImplicitTreapNode<T>::getValue() const {
 template<typename T>
 ImplicitTreapNode<T>& ImplicitTreapNode<T>::operator=(const T& otherValue) {
     value = otherValue;
+    return *this;
 }
 
 template<typename T>
 ImplicitTreapNode<T>& ImplicitTreapNode<T>::operator=(T&& otherValue) {
     value = std::move(otherValue);
+    return *this;
 }
 
 template<typename T>
