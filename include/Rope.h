@@ -66,7 +66,7 @@ public:
     void print(size_t from, size_t cnt, std::ostream& os = std::cout, const std::string& delim = " ");
 
     // Returns number of elements in the current rope
-    size_t getSize() const;
+    size_t size() const;
 
     T& operator [](size_t pos);
 

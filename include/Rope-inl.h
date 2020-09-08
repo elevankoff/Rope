@@ -53,18 +53,18 @@ Rope<T>::Rope(It first, It last)
 
 template<typename T>
 void Rope<T>::push_back(const T& value) {
-    impTreap.insert(getSize(), value);
+    impTreap.insert(size(), value);
 }
 
 
 template<typename T>
 void Rope<T>::pop_back() {
-    impTreap.erase(getSize() - 1);
+    impTreap.erase(size() - 1);
 }
 
 template<typename T>
 void Rope<T>::concat(const Rope& otherRope) {
-    size_t n = otherRope.getSize();
+    size_t n = otherRope.size();
     for (size_t i = 0; i < n; i++) {
         this->push_back(otherRope[i]);
     }
@@ -131,7 +131,7 @@ void Rope<T>::print(size_t from, size_t cnt, std::ostream& os, const std::string
 }
 
 template<typename T>
-size_t Rope<T>::getSize() const {
+size_t Rope<T>::size() const {
     return impTreap.size();
 }
 
@@ -147,7 +147,7 @@ const T& Rope<T>::operator[](size_t pos) const {
 
 template<typename T>
 bool Rope<T>::operator == (const Rope<T>& otherRope) const {
-    if (otherRope.getSize() != getSize()) { return false; }
+    if (otherRope.size() != size()) { return false; }
     std::vector<T> my_v = toVec(), other_v = otherRope.toVec();
     return my_v == other_v;
 }
