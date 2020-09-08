@@ -121,7 +121,7 @@ void Rope<T>::insert(size_t pos, Rope&& otherRope) {
 }
 
 template<typename T>
-void Rope<T>::print(std::ostream& os, size_t from, size_t cnt, const std::string& delim) {
+void Rope<T>::print(size_t from, size_t cnt, std::ostream& os, const std::string& delim) {
     auto p1 = split(from);
     auto p2 = p1.second.split(cnt);
     print(os, p2.first.impTreap.getRoot(), delim);

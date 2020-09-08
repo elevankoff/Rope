@@ -63,7 +63,7 @@ public:
     void insert(size_t pos, Rope&& otherRope);
 
     // prints "cnt" elements form position "from"
-    void print(std::ostream& os, size_t from, size_t cnt, const std::string& delim = " ");
+    void print(size_t from, size_t cnt, std::ostream& os = std::cout, const std::string& delim = " ");
 
     // Returns number of elements in the current rope
     size_t getSize() const;
