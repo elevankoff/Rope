@@ -122,6 +122,10 @@ void Rope<T>::insert(size_t pos, Rope&& otherRope) {
 
 template<typename T>
 void Rope<T>::print(size_t from, size_t cnt, std::ostream& os, const std::string& delim) {
+    if (from + cnt > size()) {
+        throw std::out_of_range("Attempt to print a non-existent element");
+    }
+
     auto p1 = split(from);
     auto p2 = p1.second.split(cnt);
     print(os, p2.first.impTreap.getRoot(), delim);
@@ -203,7 +207,7 @@ void Rope<T>::print(std::ostream& os, Node<T> curRoot, const std::string& delim)
     if (!curRoot) { return; }
     print(os, curRoot->getLeft(), delim);
     os << curRoot->getValue() << delim;
-    print(os, curRoot->right, delim);
+    print(os, curRoot->getRight(), delim);
 }
 
 template<typename T>

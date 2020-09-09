@@ -32,6 +32,11 @@ size_t ImplicitTreapNode<T>::getPriority() const {
 }
 
 template<typename T>
+void ImplicitTreapNode<T>::setPriority(size_t newPriority) {
+    priority = newPriority;
+}
+
+template<typename T>
 T& ImplicitTreapNode<T>::getValue() {
     return value;
 }

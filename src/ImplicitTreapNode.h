@@ -18,6 +18,8 @@ public:
     // Returns current node's priority
     size_t getPriority() const;
 
+    void setPriority(size_t newPriority);
+
     // Return current node's value ref
     T& getValue();
 
@@ -26,7 +28,7 @@ public:
     // Returns size of subtree
     size_t size() const;
 
-    // Updates size of current node by "left" and "right"
+    // Updates size of current node by "left" and "right". Should be called if "left" or "right" has changed
     void update();
 
     ImplicitTreapNode<T>* getLeft() const;
