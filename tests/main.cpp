@@ -3,7 +3,7 @@
 #include "../include/Rope.h"
 
 template <typename T>
-void toVec(Node<T>   curNode, std::vector<T>& result) {
+void toVec(Node<T> curNode, std::vector<T>& result) {
     if (!curNode) { return; }
     toVec(curNode->getLeft(), result);
     result.push_back(curNode->getValue());
@@ -11,7 +11,7 @@ void toVec(Node<T>   curNode, std::vector<T>& result) {
 }
 
 template <typename T>
-std::vector<T> toVec(ImplicitTreap<T>& t) {
+std::vector<T> toVec(const ImplicitTreap<T>& t) {
     std::vector<T> result;
     toVec(t.getRoot(), result);
     return result;
@@ -20,40 +20,50 @@ std::vector<T> toVec(ImplicitTreap<T>& t) {
 void TestImplicitTreapNode() {
     std::cout << "-----------------\n";
     std::cout << "ImplicitTreapNode testing: \n";
-    ImplicitTreapNode<int> tn(10, 42), tnl(1, 2), tnr(2, 3);
-
-    /*
-    tn.left = &tnl;
-    tn.right = &tnr;
-    tn.update();
-    assert(tn.getPriority() == 10);
-    assert(tn.left->getPriority() == tnl.getPriority());
-    assert(tn.right->getPriority() == tnr.getPriority());
-    std::cout << "Priority is OK \n";
-
-    int& x = tn.getValue();
-    x = 15;
-    assert(tn.getValue() == 15);
-    tn.setValue(30);
-    assert(tn.getValue() == 30);
-    std::cout << "Value is OK \n";
-
-    assert(tn.size() == 3);
-    assert(tnl.size() == 1);
-    assert(tnr.size() == 1);
-    ImplicitTreapNode<int> tn1(tn);
-    assert(tn1.size() == 3);
-    assert(tn.size() == 3);
-
-    std::cout << "Size is OK \n";
-    */
+    int a = 1;
+    ImplicitTreapNode<int> t1(1001, 5),
+        t2(1000, a), t3(999, a);
+    assert(t1.getPriority() == 1001);
+    assert(t1.size() == 1);
+    assert(t1.getValue() == 5);
+    t1.setLeft(&t2);
+    t1.setRight(&t3);
+    t1.update();
+    assert(t1.getPriority() == 1001);
+    assert(t1.size() == 3);
+    assert(t1.getLeft() == &t2);
+    assert(t1.getRight() == &t3);
+    assert(t1.getLeft()->getPriority() == 1000);
+    assert(t1.getRight()->getPriority() == 999);
+    ImplicitTreapNode<int> t4(998, 1), t5(997, 2);
+    t3.setLeft(&t4);
+    t3.setRight(&t5);
+    t3.update();
+    t1.update();
+    assert(t1.getRight()->getLeft()->getPriority() == 998);
+    assert(t1.getRight()->getRight()->getPriority() == 997);
+    assert(t1.size() == 5);
+    assert(t3.size() == 3);
+    assert(t3.getValue() == 1);
+    assert(t3.getPriority() == 999);
+    t3 = 1337;
+    assert(t3.getValue() == 1337);
+    t3 = std::move(a);
+    int& x = t3.getValue();
+    assert(x == 1);
+    x = 1000;
+    assert(t3.getValue() == 1000);
+    const ImplicitTreapNode<int> t6(2000, 1);
+    assert(t6.size() == 1);
     std::cout << "ImplicitTreapNode is OK\n";
     std::cout << "-----------------\n \n";
+
 }
 
-void TestImplicitTreap() {
+
+void TestImplicitTreap1() {
     std::cout << "-----------------\n";
-    std::cout << "ImplicitTreap testing: \n";
+    std::cout << "ImplicitTreap1 testing: \n";
     std::vector<int> v = {1, 2, 3, 4, 5, 6};
     ImplicitTreap<int> t(v);
 
@@ -115,28 +125,118 @@ void TestImplicitTreap() {
     ImplicitTreap<int> t2(v.begin(), v.end());
     t2.insert(1, t1);
     assert(toVec(t2) == std::vector<int>({1, 1, 2, 1, 2, 2, 5}));
-    std::cout << "ImplicitTreap is OK \n";
+    std::cout << "ImplicitTreap1 is OK \n";
     std::cout << "-----------------\n \n";
 }
 
-void TestRope() {
+void TestImplicitTreap2() {
     std::cout << "--------------\n";
-    std::cout << "Rope testing: \n";
+    std::cout << "ImplicitTreap2 testing: \n";
+
+    std::vector<int> v1;
+    ImplicitTreap<int> t;
+    for (size_t i = 0; i < 100; i++) {
+        size_t type = rand()%3;
+        if (type == 0) {
+            assert(t.size() == v1.size());
+            size_t pos;
+            if (t.size() == 0) {
+                pos = 0;
+            } else {
+                pos = rand() % t.size();
+            }
+            int val = rand() % 100 - 50;
+            t.insert(pos, val);
+            v1.insert(v1.begin() + pos, val);
+            assert(toVec(t) == v1);
+        } else if (type == 1 && t.size()) {
+            size_t pos = rand() % t.size();
+            t.erase(pos);
+            v1.erase(v1.begin() + pos);
+            assert(t.size() == v1.size());
+            assert(toVec(t) == v1);
+        } else if (t.size()) {
+            size_t pos = rand() % t.size();
+            assert(t.getValue(pos) == v1[pos]);
+        }
+    }
+
+    std::vector<int> v = {1, 3, 2, 5};
+    ImplicitTreap<int> t1(v.begin(), v.end()), t2(v);
+    const ImplicitTreap<int> t3(std::move(v));
+
+    assert(toVec(t1) == toVec(t2));
+    assert(toVec(t2) == toVec(t3));
+    assert(t1.size() == t2.size());
+    assert(t1.size() == t3.size());
+    assert(t1.size() == 4);
+
+    auto p = t1.split(2);
+    assert(toVec(t1) == std::vector<int>());
+    assert(toVec(p.first) == std::vector<int>({1, 3}));
+    assert(toVec(p.second) == std::vector<int>({2, 5}));
+    assert(t1.size() == 0);
+    assert(t1.getRoot() == nullptr);
+
+    ImplicitTreap<int> t4 = ImplicitTreap<int>::merge(p.first, p.second);
+    assert(p.first.size() == 0);
+    assert(p.second.size() == 0);
+    assert(toVec(t4) == v);
+    t4 = ImplicitTreap<int>::merge(t2, t4);
+    assert(t4.size() == 8);
+    assert(t2.size() == 0);
+    assert(toVec(t4) == std::vector<int>({1, 3, 2, 5, 1, 3, 2, 5}));
+    t4.insert(0, 10);
+    t4.insert(1, 100);
+    assert(toVec(t4) == std::vector<int>({10, 100, 1, 3, 2, 5, 1, 3, 2, 5}));
+    assert(t4.size() == 10);
+    t4.insert(1, t3);
+    assert(toVec(t4) == std::vector<int>({10, 1, 3, 2, 5, 100, 1, 3, 2, 5, 1, 3, 2, 5}));
+
+    std::vector<int> toCheck({10, 1, 3, 2, 5, 100, 1, 3, 2, 5, 1, 3, 2, 5});
+
+    assert(t4.size() == toCheck.size());
+    for (size_t i = 0; i < t4.size(); i++) {
+        assert(t4.getValue(i) == toCheck[i]);
+    }
+
+    t4.erase(0);
+    t4.erase(t4.size() - 1);
+    t4.erase(2);
+    assert(toVec(t4) == std::vector<int>({1, 3, 5, 100, 1, 3, 2, 5, 1, 3, 2}));
+
+
+    ImplicitTreap<int> t5(v);
+
+    t4 = t5;
+    assert(toVec(t4) == v);
+    assert(t4.size() == 4);
+    t4 = std::move(t5);
+    assert(t5.size() == 0);
+    assert(toVec(t4) == v);
+
+    std::cout << "ImplicitTreap2 is OK \n";
+    std::cout << "--------------\n\n";
+}
+
+void TestRope1() {
+    std::cout << "--------------\n";
+    std::cout << "Rope1 testing: \n";
     Rope<char> s1(std::string("123"));
-    assert(s1.getSize() == 3);
+    assert(s1.size() == 3);
     assert(s1[0] == '1');
     assert(s1[1] == '2');
     assert(s1[2] == '3');
 
     Rope<char> s2(std::string("456"));
-    assert(s2.getSize() == 3);
+    assert(s2.size() == 3);
     assert(s2[0] == '4');
     assert(s2[1] == '5');
     assert(s2[2] == '6');
 
     Rope<char> s3(std::move(s1));
     s3.concat(s2);
-    assert(s3.getSize() == 6);
+    assert(s3.size() == 6);
     assert(s3[0] == '1');
     assert(s3[1] == '2');
     assert(s3[2] == '3');
@@ -146,7 +246,7 @@ void TestRope() {
 
 
     s3.concat(Rope<char>("789"));
-    assert(s3.getSize() == 9);
+    assert(s3.size() == 9);
     assert(s3[0] == '1');
     assert(s3[3] == '4');
     assert(s3[6] == '7');
@@ -157,7 +257,7 @@ void TestRope() {
 
 
     s4.concat(Rope<char>("bcdefgh"));
-    assert(s4.getSize() == 8);
+    assert(s4.size() == 8);
     assert(s4[0] == 'a');
     assert(s4[1] == 'b');
     assert(s4[2] == 'c');
@@ -179,7 +279,7 @@ void TestRope() {
     std::string s6_str;
     Rope<char> const s6(Rope<char>(std::string("abcd")));
     Rope<char> empty("");
-    assert(empty.getSize() == 0);
+    assert(empty.size() == 0);
     s5.concat(s6);
     assert(s5 == Rope<char>("aacwabcd"));
     s5.insert(0, 'A');
@@ -206,54 +306,89 @@ void TestRope() {
     assert(c >= b);
     assert(!(c == b));
     assert(c != b);
-    std::cout << "Rope is OK \n";
+    std::cout << "Rope1 is OK \n";
     std::cout << "--------------\n";
 }
 
-using namespace std::chrono;
-using namespace __gnu_cxx;
-#include <ext/rope>
+void TestRope2() {
+    std::cout << "-----------------\n";
+    std::cout << "Rope2 testing: \n";
 
-class Random {
-public:
-    Random(size_t a, size_t b) : generator(time(0)), distribution(a, b) {}
-public:
-    std::default_random_engine generator;
-    std::uniform_int_distribution<size_t> distribution;
-};
+    const std::string s1 = "Hi, Pedro!";
+    Rope<char> r1(s1);
+    assert(r1[0] == s1[0]);
+    assert(r1[2] == s1[2]);
+    assert(r1[4] == s1[4]);
+    assert(r1[r1.size() - 1] == s1[s1.size() - 1]);
+    assert(r1.toVec() == std::vector<char>(s1.begin(), s1.end()));
+    assert(r1.size() == s1.size());
+
+    std::string s2 = " I want to tell you a story...",
+        s3 = s1 + s2;
+
+    Rope<char> r2(s2.begin(), s2.end());
+    r1.concat(r2);
+    assert(r1.toVec() == std::vector<char>(s3.begin(), s3.end()));
+    r1.concat(std::move(r2));
+    assert(r2.size() == 0);
+    s3 += s2;
+    assert(r1.toVec() == std::vector<char>(s3.begin(), s3.end()));
+    assert(r1.size() == s3.size());
+    r1.pop_back(); s3.pop_back();
+    r1.pop_back(); s3.pop_back();
+    assert(r1.toVec() == std::vector<char>(s3.begin(), s3.end()));
+    assert(r1.size() == s3.size());
+    char& x = r1[0];
+    s3[0] = 'U';
+    x = 'U';
+    r1.print(0, r1.size(), std::cout, "");
+    std::cout << '\n';
+
+    try {
+        r1.print(10, r1.size(), std::cout, "");
+        assert(false);
+    } catch(...) {}
+
+    assert(r1.toVec() == std::vector<char>(s3.begin(), s3.end()));
+
+    r1.push_back('!'); s3.push_back('!');
+    r1.push_back('!'); s3.push_back('!');
+    assert(r1.toVec() == std::vector<char>(s3.begin(), s3.end()));
+    Rope<char> r3(s3.begin(), s3.end());
+    assert(r3 == r1);
+    r1[0] = r3[0] = 'K';
+    assert(r3 == r1);
+    r1.erase(0);
+    r3.erase(0);
+    s3.erase(s3.begin());
+    assert(r3.size() == s3.size());
+    assert(r3.toVec() == std::vector<char>(s3.begin(), s3.end()));
+    r1.insert(1, std::move(r3));
+    std::string s4 = s3;
+    s3.insert(1, s4);
+    assert(r1.toVec() == std::vector<char>(s3.begin(), s3.end()));
+    assert(r1.size() == s3.size());
+    s3.insert(3, s4);
+    Rope<char> r4(s4.begin(), s4.end());
+    r1.insert(3, r4);
+    assert(r1.toVec() == std::vector<char>(s3.begin(), s3.end()));
+    r1 = r4;
+    assert(r1.size() == s4.size());
+    assert(r1.toVec() == std::vector<char>(s4.begin(), s4.end()));
+
+    std::cout << "Rope2 is OK \n";
+    std::cout << "--------------\n\n";
+}
+
+void TestAll() {
+    TestImplicitTreapNode();
+    TestImplicitTreap1();
+    TestImplicitTreap2();
+    TestRope1();
+    TestRope2();
+}
 
 int main() {
     srand(time(0));
-
-    TestImplicitTreapNode();
-    TestImplicitTreap();
-    TestRope();
-
-    return 0;
-    auto start = high_resolution_clock::now();
-
-    std::vector<char> lines[1000];
-    for (size_t i = 0; i < 1000; i++) {
-        size_t size = rand() % 10000;
-        for (size_t j = 0; j < size; j++) {
-            lines[i].push_back(char('a' + rand()%26));
-        }
-    }
-
-
-    rope<char> sr[1000];
-    Rope<char> mr[1000];
-    for (size_t i = 0; i < 1000; i++) {
-        for (size_t j = 0; j < lines[i].size(); j++) {
-            sr[i].push_back(lines[i][j]);
-            //mr[i].push_back(lines[i][j]);
-        }
-    }
-
-    auto stop = high_resolution_clock::now();
-    auto duration = duration_cast<microseconds>(stop - start);
-    std::cout << duration.count() / 1'000'000.0;
-
-
-    return 0;
+    TestAll();
 }
