@@ -45,15 +45,15 @@ Lalita
 ## Comparison with Vector(or String)
 | Operation| Vector(or String) | Rope |
 |---- | ------------- | ------------- |
-| `Build` | *O(n)* | *O(n log(n))* |
-| `Insert (destructive (use std::move))` |  *O(n m)* | *O(log(n))* |
-| `Insert (non-destructive)` |  *O(n m)* | *O(m log(n))* |
-| `Erase` | *O(n)* | *O(log(n))* |
-| `Concat` | *O(m)* | *O(log(n))* |
-| `Split` |  *O(n)* | *O(log(n))* |
-| `Push/pop back` | *O(1)* | *O(log(n))* |
-| `Print` | *O(m)* | *O(m + log(n))* |
-| `Get value` | *O(1)* | *O(log(n))* |
+| `Build` | ***O(n)*** | *O(n log(n))* |
+| `Insert (destructive (use std::move))` |  *O(n m)* | ***O(log(n))*** |
+| `Insert (non-destructive)` |  *O(n m)* | ***O(m log(n))*** |
+| `Erase` | *O(n)* | ***O(log(n))*** |
+| `Concat` | *O(m)* | ***O(log(n))*** |
+| `Split` |  *O(n)* | ***O(log(n))*** |
+| `Push/pop back` | ***O(1)*** | *O(log(n))* |
+| `Print` | ***O(m)*** | *O(m + log(n))* |
+| `Get value` | ***O(1)*** | *O(log(n))* |
 | `Get size` | *O(1)* | *O(1)* |
 | `Comparison operators` | *O(n)* | *O(n)* |
 
