@@ -61,6 +61,7 @@ Lalita
 ## Future work
 - ~~Make "print"-function more user-friendly~~
 - Implement iterators 
+  - Now I found it hard to implement them because of the structure of ImplicitTreap. I hope that I'll come up with a good solution in the future.
 - ~~Add more tests~~
 - ...
 
