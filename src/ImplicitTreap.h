@@ -101,12 +101,12 @@ private:
     void clear(Node<T> curNode);
 
 private:
-    // RandomFunc class must have operator "()"
     Node<T> root;
 
 public:
     static std::mt19937 ImplicitTreapRandom;
     ~ImplicitTreap();
+
 };
 
 template<typename T>
