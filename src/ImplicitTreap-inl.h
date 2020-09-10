@@ -10,7 +10,6 @@
 template<typename T>
 ImplicitTreap<T>::ImplicitTreap()
     : root(nullptr) {
-    ImplicitTreapRandom = std::mt19937(std::chrono::steady_clock::now().time_since_epoch().count());
 }
 
 template<typename T>
@@ -58,8 +57,7 @@ ImplicitTreap<T>::ImplicitTreap(Node<T> otherRoot)
 template<typename T>
 ImplicitTreap<T>::ImplicitTreap(const ImplicitTreap<T>& other)
     : ImplicitTreap() {
-    this->root = copy(this->root, other.root, this->ImplicitTreapRandom);
-    this->ImplicitTreapRandom = other.ImplicitTreapRandom;
+    this->root = copy(this->root, other.root);
 }
 
 template<typename T>
@@ -67,7 +65,6 @@ ImplicitTreap<T>::ImplicitTreap(ImplicitTreap<T>&& other)
     : ImplicitTreap() {
     this->root = other.root;
     other.root = nullptr;
-    this->ImplicitTreapRandom = std::move(other.ImplicitTreapRandom);
 }
 
 template<typename T>
@@ -80,14 +77,14 @@ ImplicitTreap<T>::ImplicitTreap(It first, It last)
 }
 
 template<typename T>
-Node<T> ImplicitTreap<T>::createNode(const T& value, std::mt19937& ImplicitTreapRandom) {
+Node<T> ImplicitTreap<T>::createNode(const T& value) {
     size_t priority = ImplicitTreapRandom();
     auto result = new ImplicitTreapNode<T>(priority, value);
     return result;
 }
 
 template<typename T>
-Node<T> ImplicitTreap<T>::createNode(T&& value, std::mt19937& ImplicitTreapRandom) {
+Node<T> ImplicitTreap<T>::createNode(T&& value) {
     size_t priority = ImplicitTreapRandom();
     auto result = new ImplicitTreapNode<T>(priority, std::move(value));
     return result;
@@ -115,7 +112,7 @@ void ImplicitTreap<T>::insert(size_t pos, const T& value) {
         throw std::out_of_range("Attempt to insert into non-existent position");
     }
 
-    root = insert(root, pos, value, ImplicitTreapRandom);
+    root = insert(root, pos, value);
 }
 
 template<typename T>
@@ -124,7 +121,7 @@ void ImplicitTreap<T>::insert(size_t pos, T&& value) {
         throw std::out_of_range("Attempt to insert into non-existent position");
     }
 
-    root = insert(root, pos, std::move(value), ImplicitTreapRandom);
+    root = insert(root, pos, std::move(value));
 }
 
 template<typename T>
@@ -199,22 +196,22 @@ Node<T> ImplicitTreap<T>::merge(Node<T> lhs, Node<T> rhs) {
 }
 
 template<typename T>
-Node<T> ImplicitTreap<T>::insert(Node<T> curRoot, size_t pos, const T& value, std::mt19937& ImplicitTreapRandom) {
+Node<T> ImplicitTreap<T>::insert(Node<T> curRoot, size_t pos, const T& value) {
     auto p = split(curRoot, pos);
     Node<T> left = p.first;
     Node<T> right = p.second;
-    auto newNode = createNode(value, ImplicitTreapRandom);
+    auto newNode = createNode(value);
     auto leftMergeResult = merge(left, newNode);
     return merge(leftMergeResult, right);
 }
 
 
 template<typename T>
-Node<T> ImplicitTreap<T>::insert(Node<T> curRoot, size_t pos, T&& value, std::mt19937& ImplicitTreapRandom) {
+Node<T> ImplicitTreap<T>::insert(Node<T> curRoot, size_t pos, T&& value) {
     auto p = split(curRoot, pos);
     Node<T> left = p.first;
     Node<T> right = p.second;
-    auto newNode = createNode(std::move(value), ImplicitTreapRandom);
+    auto newNode = createNode(std::move(value));
     auto leftMergeResult = merge(left, newNode);
     return merge(leftMergeResult, right);
 }
@@ -279,11 +276,11 @@ ImplicitTreap<T>::~ImplicitTreap() {
 }
 
 template<typename T>
-Node<T> ImplicitTreap<T>::copy(Node<T> to, Node<T> from, std::mt19937& ImplicitTreapRandom) {
+Node<T> ImplicitTreap<T>::copy(Node<T> to, Node<T> from) {
     if (!from) { return nullptr; }
-    to = createNode(from->getValue(), ImplicitTreapRandom);
-    to->setLeft(copy(to->getLeft(), from->getLeft(), ImplicitTreapRandom));
-    to->setRight(copy(to->getRight(), from->getRight(), ImplicitTreapRandom));
+    to = createNode(from->getValue());
+    to->setLeft(copy(to->getLeft(), from->getLeft()));
+    to->setRight(copy(to->getRight(), from->getRight()));
     to->update();
     return to;
 }
@@ -292,7 +289,7 @@ template<typename T>
 ImplicitTreap<T>& ImplicitTreap<T>::operator=(const ImplicitTreap<T>& other) {
     if (this != &other) {
         clear(root);
-        root = copy(root, other.root, ImplicitTreapRandom);
+        root = copy(root, other.root);
     }
     return *this;
 }

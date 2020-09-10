@@ -68,9 +68,9 @@ public:
     [[ nodiscard ]] static ImplicitTreap<T> merge(ImplicitTreap<T>& lhs, ImplicitTreap<T>& rhs);
 
     // Creates node with the current "ImplicitTreap"'s random function
-    [[ nodiscard ]] static Node<T> createNode(const T& value, std::mt19937& ImplicitTreapRandom);
+    [[ nodiscard ]] static Node<T> createNode(const T& value);
 
-    [[ nodiscard ]] static Node<T> createNode(T&& value, std::mt19937& ImplicitTreapRandom);
+    [[ nodiscard ]] static Node<T> createNode(T&& value);
 
     T& getValue(size_t pos);
 
@@ -86,15 +86,15 @@ public:
 private:
     explicit ImplicitTreap(Node<T> otherRoot);
 
-    static Node<T> copy(Node<T> to, Node<T> from, std::mt19937& ImplicitTreapRandom);
+    static Node<T> copy(Node<T> to, Node<T> from);
 
     static std::pair<Node<T>, Node<T>> split(Node<T> curNode, size_t toCut);
 
     static Node<T> merge(Node<T> lhs, Node<T> rhs);
 
-    static Node<T> insert(Node<T> curRoot, size_t pos, const T& value, std::mt19937& ImplicitTreapRandom);
+    static Node<T> insert(Node<T> curRoot, size_t pos, const T& value);
 
-    static Node<T> insert(Node<T> curRoot, size_t pos, T&& value, std::mt19937& ImplicitTreapRandom);
+    static Node<T> insert(Node<T> curRoot, size_t pos, T&& value);
 
     static T& getValue(Node<T> curRoot, size_t pos);
 
@@ -105,9 +105,12 @@ private:
     Node<T> root;
 
 public:
-    std::mt19937 ImplicitTreapRandom;
+    static std::mt19937 ImplicitTreapRandom;
     ~ImplicitTreap();
 };
+
+template<typename T>
+std::mt19937 ImplicitTreap<T>::ImplicitTreapRandom(std::mt19937(std::chrono::steady_clock::now().time_since_epoch().count()));
 
 #include "ImplicitTreap-inl.h"
 
