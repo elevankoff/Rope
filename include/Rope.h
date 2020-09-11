@@ -7,25 +7,17 @@ template<typename T>
 class Rope {
 public:
     // Constructors
-    Rope();
+    Rope() = default;
 
     Rope(const Rope& otherRope);
 
     Rope(Rope&& otherRope);
 
     template<typename Container>
-    explicit Rope(const Container& values, size_t size);
+    explicit Rope(const Container& values);
 
     template<typename Container>
-    explicit Rope(Container&& values, size_t size);
-
-    explicit Rope(const std::vector<T>& values);
-
-    explicit Rope(std::vector<T>&& values);
-
-    explicit Rope(const std::string& s);
-
-    explicit Rope(std::string&& s);
+    explicit Rope(Container&& values);
 
     template <typename It>
     Rope(It first, It last);

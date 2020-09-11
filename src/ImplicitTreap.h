@@ -14,8 +14,7 @@ class ImplicitTreap {
 public:
     // Constructors
 
-    // Must be called in all constructors
-    ImplicitTreap();
+    ImplicitTreap() = default;
 
     template<typename Container>
     explicit ImplicitTreap(const Container& values);
@@ -92,7 +91,7 @@ private:
 
     void clear(Node<T> curNode);
 
-    Node<T> root;
+    Node<T> root = nullptr;
 
 public:
     static std::mt19937 ImplicitTreapRandom;

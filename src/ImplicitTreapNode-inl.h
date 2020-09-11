@@ -5,21 +5,21 @@
 
 template<typename T>
 ImplicitTreapNode<T>::ImplicitTreapNode()
-    : size_(1), left(nullptr), right(nullptr) {}
+    : size_(1)
+    , left(nullptr)
+    , right(nullptr) {}
 
 template<typename T>
 ImplicitTreapNode<T>::ImplicitTreapNode(size_t priority, T&& value)
-    : ImplicitTreapNode() {
-    this->priority = priority;
-    this->value = std::move(value);
-}
+    : ImplicitTreapNode()
+    , priority(priority)
+    , value(std::move(value)) {}
 
 template <typename T>
 ImplicitTreapNode<T>::ImplicitTreapNode(size_t priority, const T& value)
-        : ImplicitTreapNode() {
-    this->priority = priority;
-    this->value = value;
-}
+    : ImplicitTreapNode()
+    , priority(priority)
+    , value(value) {}
 
 template <typename T>
 size_t ImplicitTreapNode<T>::getSize(ImplicitTreapNode* node) {
@@ -87,8 +87,5 @@ template<typename T>
 void ImplicitTreapNode<T>::setRight(ImplicitTreapNode* other) {
     this->right = other;
 }
-
-
-
 
 #endif // ROPE_IMPLICITTREAPNODE_INL_H

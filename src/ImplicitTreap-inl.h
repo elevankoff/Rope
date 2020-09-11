@@ -6,16 +6,9 @@
 
 #include "ImplicitTreap.h"
 
-
-template<typename T>
-ImplicitTreap<T>::ImplicitTreap()
-    : root(nullptr) {
-}
-
 template<typename T>
 template<typename Container>
-ImplicitTreap<T>::ImplicitTreap(const Container& values)
-    : ImplicitTreap() {
+ImplicitTreap<T>::ImplicitTreap(const Container& values) {
     for (const auto& value : values) {
         insert(size(), value);
     }
@@ -23,37 +16,30 @@ ImplicitTreap<T>::ImplicitTreap(const Container& values)
 
 template<typename T>
 template<typename Container>
-ImplicitTreap<T>::ImplicitTreap(Container&& values)
-    : ImplicitTreap() {
-    for (const auto&& value : values) {
+ImplicitTreap<T>::ImplicitTreap(Container&& values) {
+    for (auto&& value : values) {
         insert(size(), std::move(value));
     }
 }
 
 template<typename T>
 ImplicitTreap<T>::ImplicitTreap(Node<T> otherRoot)
-    : ImplicitTreap(){
-    this->root = otherRoot;
-}
-
+    : root(otherRoot) {}
 
 template<typename T>
 ImplicitTreap<T>::ImplicitTreap(const ImplicitTreap<T>& other)
-    : ImplicitTreap() {
-    root = copy(root, other.root);
-}
+    : root(copy(root, other.root)) {}
+
 
 template<typename T>
-ImplicitTreap<T>::ImplicitTreap(ImplicitTreap<T>&& other)
-    : ImplicitTreap() {
+ImplicitTreap<T>::ImplicitTreap(ImplicitTreap<T>&& other) {
     root = other.root;
     other.root = nullptr;
 }
 
 template<typename T>
 template<typename It>
-ImplicitTreap<T>::ImplicitTreap(It first, It last)
-    : ImplicitTreap() {
+ImplicitTreap<T>::ImplicitTreap(It first, It last) {
     while (first != last) {
         insert(size(), *first++);
     }
