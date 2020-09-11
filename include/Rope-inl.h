@@ -3,9 +3,6 @@
 
 #include "Rope.h"
 
-template<typename T>
-Rope<T>::Rope()
-    : impTreap() {}
 
 template<typename T>
 Rope<T>::Rope(const Rope<T>& otherRope)
@@ -17,33 +14,14 @@ Rope<T>::Rope(Rope&& otherRope)
 
 template<typename T>
 template<typename Container>
-Rope<T>::Rope(const Container& values, size_t size)
-    : impTreap(values, size) {}
-
-template<typename T>
-Rope<T>::Rope(const std::vector<T>& values)
+Rope<T>::Rope(const Container& values)
     : impTreap(values) {}
 
-template<typename T>
-Rope<T>::Rope(std::vector<T>&& values)
-    : impTreap(std::move(values)) {}
-
-template<typename T>
-Rope<T>::Rope(const std::string& s)
-    : impTreap(s) {
-    static_assert(std::is_same<T, char>::value, "!");
-}
-
-template<typename T>
-Rope<T>::Rope(std::string&& s)
-    : impTreap(std::move(s)) {
-    static_assert(std::is_same<T, char>::value, "!");
-}
 
 template<typename T>
 template<typename Container>
-Rope<T>::Rope(Container&& values, size_t size)
-    : impTreap(std::move(values), size) {}
+Rope<T>::Rope(Container&& values)
+    : impTreap(std::move(values)) {}
 
 template<typename T>
 template<typename It>
@@ -64,9 +42,8 @@ void Rope<T>::pop_back() {
 
 template<typename T>
 void Rope<T>::concat(const Rope& otherRope) {
-    size_t n = otherRope.size();
-    for (size_t i = 0; i < n; i++) {
-        this->push_back(otherRope[i]);
+    for (const auto& value : otherRope) {
+        push_back(value);
     }
 }
 
