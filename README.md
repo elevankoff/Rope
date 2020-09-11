@@ -60,8 +60,9 @@ Lalita
 
 ## Future work
 - ~~Make "print"-function more user-friendly~~
-- Implement iterators 
+- ~~Implement iterators~~ 
 - ~~Add more tests~~
+- Implement more iterator-based functionality.
 - ...
 
 ## Contributing
