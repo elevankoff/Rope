@@ -55,13 +55,14 @@ Lalita
 | `Print` | ***O(m)*** | *O(m + log(n))* |
 | `Get value` | ***O(1)*** | *O(log(n))* |
 | `Get size` | *O(1)* | *O(1)* |
-| `Comparison operators` | *O(n)* | *O(n)* |
+| `Comparison operators` | ***O(n)*** | *Ω(n)* |
 
 
 ## Future work
 - ~~Make "print"-function more user-friendly~~
 - ~~Implement iterators~~ 
 - ~~Add more tests~~
+- Implement comparsin with O(n) asymptotic.
 - Implement more iterator-based functionality.
 - ...
 
