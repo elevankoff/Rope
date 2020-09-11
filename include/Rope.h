@@ -2,7 +2,8 @@
 #define ROPE_ROPE_H
 
 #include "../src/ImplicitTreap.h"
-template <typename T>
+
+template<typename T>
 class Rope {
 public:
     // Constructors
