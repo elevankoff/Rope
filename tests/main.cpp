@@ -244,8 +244,7 @@ void TestRope1() {
     assert(s3[4] == '5');
     assert(s3[5] == '6');
 
-
-    s3.concat(Rope<char>("789"));
+    s3.concat(Rope<char>(std::string("789")));
     assert(s3.size() == 9);
     assert(s3[0] == '1');
     assert(s3[3] == '4');
@@ -256,7 +255,7 @@ void TestRope1() {
     Rope<char> s4(std::string("a"));
 
 
-    s4.concat(Rope<char>("bcdefgh"));
+    s4.concat(Rope<char>(std::string("bcdefgh")));
     assert(s4.size() == 8);
     assert(s4[0] == 'a');
     assert(s4[1] == 'b');
@@ -271,35 +270,35 @@ void TestRope1() {
     Rope<char> s5(std::string("ab"));
     s5[1] = 'a';
     assert('a' == s5[1]);
-    assert(s5 == Rope<char>("aa"));
+    assert(s5 == Rope<char>(std::string("aa")));
     s5.push_back('c');
     s5.push_back('w');
-    assert(s5 == Rope<char>("aacw"));
+    assert(s5 == Rope<char>(std::string("aacw")));
 
     std::string s6_str;
     Rope<char> const s6(Rope<char>(std::string("abcd")));
-    Rope<char> empty("");
+    Rope<char> empty(std::string(""));
     assert(empty.size() == 0);
     s5.concat(s6);
-    assert(s5 == Rope<char>("aacwabcd"));
+    assert(s5 == Rope<char>(std::string("aacwabcd")));
     s5.insert(0, 'A');
     s5.insert(1, 'B');
-    assert(s5 == Rope<char>("ABaacwabcd"));
+    assert(s5 == Rope<char>(std::string("ABaacwabcd")));
     auto p = s5.split(5);
-    assert(p.first == Rope<char>("ABaac"));
-    assert(p.second == Rope<char>("wabcd"));
+    assert(p.first == Rope<char>(std::string("ABaac")));
+    assert(p.second == Rope<char>(std::string("wabcd")));
     p.first.concat(std::move(p.second));
-    assert(p.first == Rope<char>("ABaacwabcd"));
+    assert(p.first == Rope<char>(std::string("ABaacwabcd")));
     p.first.concat(p.first);
-    assert(p.first == Rope<char>("ABaacwabcdABaacwabcd"));
+    assert(p.first == Rope<char>(std::string("ABaacwabcdABaacwabcd")));
     Rope<char> a(p.first);
     a.erase(2, 2);
-    assert(a == Rope<char>("ABcwabcdABaacwabcd"));
+    assert(a == Rope<char>(std::string("ABcwabcdABaacwabcd")));
     a.pop_back();
     a.pop_back();
-    assert(a == Rope<char>("ABcwabcdABaacwab"));
-    Rope<char> b("asdads");
-    Rope<char> c("basdas");
+    assert(a == Rope<char>(std::string("ABcwabcdABaacwab")));
+    Rope<char> b(std::string("asdads"));
+    Rope<char> c(std::string("basdas"));
     assert(b < c);
     assert(b <= c);
     assert(c > b);
