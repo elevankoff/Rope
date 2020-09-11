@@ -2,7 +2,8 @@
 #define ROPE_ROPE_H
 
 #include "../src/ImplicitTreap.h"
-template <typename T>
+
+template<typename T>
 class Rope {
 public:
     // Constructors
@@ -32,10 +33,10 @@ public:
     void push_back(const T& value);
 
     void pop_back();
-
-    //  Concatenate current rope with "other" ("other" rope becomes empty)
+    
     void concat(const Rope& otherRope);
 
+    //  Concatenate current rope with "other" ("other" rope becomes empty)
     void concat(Rope&& otherRope);
 
     // Splits current rope into two ropes, where first rope has size "toCut" and
