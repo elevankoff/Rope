@@ -2,7 +2,6 @@
 #define ROPE_ROPE_H
 
 #include "../src/ImplicitTreap.h"
-
 template <typename T>
 class Rope {
 public:
@@ -90,6 +89,96 @@ public:
 
     std::vector<T> toVec() const;
 
+    class iterator {
+        T* elem;
+        size_t pos;
+        Rope<T>* rope;
+    public:
+        iterator(T* elem, size_t pos, Rope<T>* rope);
+
+        iterator operator+ (int n);
+        iterator operator- (int n);
+
+        iterator  operator++ (int);
+        iterator operator-- (int);
+
+        iterator operator++ ();
+        iterator operator-- ();
+
+        bool operator!= (const iterator& it);
+        bool operator== (const iterator& it);
+
+        T& operator* ();
+        T* operator->();
+    };
+
+    class const_iterator {
+        const T* elem;
+        size_t pos;
+        const Rope<T>* rope;
+    public:
+        const_iterator(const T* elem, size_t pos, const Rope<T>* rope);
+
+        const_iterator operator+ (int n);
+        const_iterator operator- (int n);
+
+        const_iterator  operator++ (int);
+        const_iterator operator-- (int);
+
+        const_iterator operator++ ();
+        const_iterator operator-- ();
+
+        bool operator!= (const const_iterator& it);
+        bool operator== (const const_iterator& it);
+
+        const T& operator* ();
+        const T* operator->();
+    };
+
+    iterator begin() {
+        Node<T> root = impTreap.getRoot();
+        if (!root) {
+            return iterator(nullptr, 0, this);
+        }
+        while (root->getLeft()) {
+            root = root->getLeft();
+        }
+        return iterator(&root->getValue(), 0, this);
+    }
+
+    const_iterator begin() const {
+        Node<T> root = impTreap.getRoot();
+        if (!root) {
+            return const_iterator(nullptr, 0, this);
+        }
+        while (root->getLeft()) {
+            root = root->getLeft();
+        }
+        return const_iterator(&root->getValue(), 0, this);
+    }
+
+    iterator end() {
+        Node<T> root = impTreap.getRoot();
+        if (!root) {
+            return iterator(nullptr, 0, this);
+        }
+        while (root->getRight()) {
+            root = root->getRight();
+        }
+        return iterator(nullptr, size(), this);
+    }
+
+    const_iterator end() const {
+        Node<T> root = impTreap.getRoot();
+        if (!root) {
+            return const_iterator(nullptr, 0, this);
+        }
+        while (root->getRight()) {
+            root = root->getRight();
+        }
+        return const_iterator(nullptr, size(), this);
+    }
+
 private:
     static void print(std::ostream& os, Node<T> curRoot, const std::string& delim);
 
@@ -100,6 +189,9 @@ private:
 };
 
 #include "Rope-inl.h"
+#include "../src/RopeIterator-inl.h"
+#include "../src/RopeConstIterator-inl.h"
+
 
 
 #endif //ROPE_ROPE_H

@@ -197,6 +197,7 @@ Rope<T>& Rope<T>::operator=(Rope<T>&& otherRope) {
 template<typename T>
 std::vector<T> Rope<T>::toVec() const {
     std::vector<T> result;
+    result.reserve(size());
     toVec(impTreap.getRoot(), result);
     return result;
 }
