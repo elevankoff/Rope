@@ -62,7 +62,7 @@ Lalita
 - ~~Make "print"-function more user-friendly~~
 - ~~Implement iterators~~ 
 - ~~Add more tests~~
-- Implement comparsin with O(n) asymptotic.
+- Improve comparsin to O(n) asymptotic.
 - Implement more iterator-based functionality.
 - ...
 
