@@ -14,38 +14,21 @@ ImplicitTreap<T>::ImplicitTreap()
 
 template<typename T>
 template<typename Container>
-ImplicitTreap<T>::ImplicitTreap(const Container& values, size_t size)
+ImplicitTreap<T>::ImplicitTreap(const Container& values)
     : ImplicitTreap() {
-    for (size_t i = 0; i < size; i++) {
-        insert(i, values[i]);
+    for (const auto& value : values) {
+        insert(size(), value);
     }
 }
 
 template<typename T>
 template<typename Container>
-ImplicitTreap<T>::ImplicitTreap(Container&& values, size_t size)
+ImplicitTreap<T>::ImplicitTreap(Container&& values)
     : ImplicitTreap() {
-    for (size_t i = 0; i < size; i++) {
-        insert(i, std::move(values[i]));
+    for (const auto&& value : values) {
+        insert(size(), std::move(value));
     }
 }
-
-template<typename T>
-ImplicitTreap<T>::ImplicitTreap(const std::vector<T>& v)
-    : ImplicitTreap(v, v.size()) {}
-
-template<typename T>
-ImplicitTreap<T>::ImplicitTreap(std::vector<T>&& v)
-    : ImplicitTreap(std::move(v), v.size()) {}
-
-template<typename T>
-ImplicitTreap<T>::ImplicitTreap(const std::string& s)
-    : ImplicitTreap(s, s.length()) {}
-
-template<typename T>
-ImplicitTreap<T>::ImplicitTreap(std::string&& s)
-    : ImplicitTreap(std::move(s), s.length()) {}
-
 
 template<typename T>
 ImplicitTreap<T>::ImplicitTreap(Node<T> otherRoot)
@@ -57,13 +40,13 @@ ImplicitTreap<T>::ImplicitTreap(Node<T> otherRoot)
 template<typename T>
 ImplicitTreap<T>::ImplicitTreap(const ImplicitTreap<T>& other)
     : ImplicitTreap() {
-    this->root = copy(this->root, other.root);
+    root = copy(root, other.root);
 }
 
 template<typename T>
 ImplicitTreap<T>::ImplicitTreap(ImplicitTreap<T>&& other)
     : ImplicitTreap() {
-    this->root = other.root;
+    root = other.root;
     other.root = nullptr;
 }
 

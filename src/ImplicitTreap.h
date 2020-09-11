@@ -18,18 +18,10 @@ public:
     ImplicitTreap();
 
     template<typename Container>
-    explicit ImplicitTreap(const Container& values, size_t size);
+    explicit ImplicitTreap(const Container& values);
 
     template<typename Container>
-    ImplicitTreap(Container&& values, size_t size);
-
-    explicit ImplicitTreap(const std::vector<T>& v);
-
-    explicit ImplicitTreap(std::vector<T>&& v);
-
-    explicit ImplicitTreap(const std::string& s);
-
-    explicit ImplicitTreap(std::string&& s);
+    ImplicitTreap(Container&& values);
 
     ImplicitTreap(const ImplicitTreap<T>& other);
 
@@ -104,7 +96,7 @@ private:
 
 public:
     static std::mt19937 ImplicitTreapRandom;
-    
+
     ~ImplicitTreap();
 };
 
