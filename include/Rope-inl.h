@@ -70,7 +70,8 @@ T& Rope<T>::back() {
 
 template<typename T>
 void Rope<T>::concat(const Rope& otherRope) {
-    for (const auto& value : otherRope) {
+    std::vector<T> v = otherRope.toVec();
+    for (const auto& value : v) {
         push_back(value);
     }
 }
