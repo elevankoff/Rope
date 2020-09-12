@@ -4,21 +4,13 @@
 #include "ImplicitTreapNode.h"
 
 template<typename T>
-ImplicitTreapNode<T>::ImplicitTreapNode()
-    : size_(1)
-    , left(nullptr)
-    , right(nullptr) {}
-
-template<typename T>
 ImplicitTreapNode<T>::ImplicitTreapNode(size_t priority, T&& value)
-    : ImplicitTreapNode()
-    , priority(priority)
+    : priority(priority)
     , value(std::move(value)) {}
 
 template <typename T>
 ImplicitTreapNode<T>::ImplicitTreapNode(size_t priority, const T& value)
-    : ImplicitTreapNode()
-    , priority(priority)
+    : priority(priority)
     , value(value) {}
 
 template <typename T>

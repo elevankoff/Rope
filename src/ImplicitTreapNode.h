@@ -50,9 +50,10 @@ public:
 private:
     T value;
     // Size of subtree and randomly generated "priority"
-    size_t size_, priority;
-    ImplicitTreapNode* left;
-    ImplicitTreapNode* right;
+    size_t size_ = 1;
+    size_t priority;
+    ImplicitTreapNode* left = nullptr;
+    ImplicitTreapNode* right = nullptr;
 };
 
 #include "ImplicitTreapNode-inl.h"
