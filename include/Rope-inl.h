@@ -126,43 +126,43 @@ const T& Rope<T>::operator[](size_t pos) const {
 }
 
 template<typename T>
-bool Rope<T>::operator == (const Rope<T>& otherRope) const {
+bool Rope<T>::operator== (const Rope<T>& otherRope) const {
     return impTreap.lexCompare(otherRope.impTreap) == 0;
 }
 
 template<typename T>
-bool Rope<T>::operator != (const Rope<T>& otherRope) const {
+bool Rope<T>::operator!= (const Rope<T>& otherRope) const {
     return !((*this) == otherRope);
 }
 
 template<typename T>
-bool Rope<T>::operator < (const Rope<T>& otherRope) const {
+bool Rope<T>::operator< (const Rope<T>& otherRope) const {
     return impTreap.lexCompare(otherRope.impTreap) == -1;
 }
 
 template<typename T>
-bool Rope<T>::operator <= (const Rope<T>& otherRope) const {
+bool Rope<T>::operator<= (const Rope<T>& otherRope) const {
     return (*this) == otherRope || (*this) < otherRope;
 }
 
 template<typename T>
-bool Rope<T>::operator > (const Rope<T>& otherRope) const {
+bool Rope<T>::operator> (const Rope<T>& otherRope) const {
     return impTreap.lexCompare(otherRope.impTreap) == 1;
 }
 
 template<typename T>
-bool Rope<T>::operator >= (const Rope<T>& otherRope) const {
+bool Rope<T>::operator>= (const Rope<T>& otherRope) const {
     return !((*this) < otherRope);
 }
 
 template<typename T>
-Rope<T>& Rope<T>::operator = (const Rope<T>& otherRope) {
+Rope<T>& Rope<T>::operator= (const Rope<T>& otherRope) {
     impTreap = otherRope.impTreap;
     return *this;
 }
 
 template<typename T>
-Rope<T>& Rope<T>::operator=(Rope<T>&& otherRope) {
+Rope<T>& Rope<T>::operator= (Rope<T>&& otherRope) {
     impTreap = std::move(otherRope.impTreap);
     return *this;
 }

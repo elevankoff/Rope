@@ -60,25 +60,25 @@ public:
     // Returns number of elements in the current rope
     size_t size() const;
 
-    T& operator [](size_t pos);
+    T& operator[](size_t pos);
 
     const T& operator[](size_t pos) const;
 
-    bool operator == (const Rope<T>& otherRope) const;
+    bool operator== (const Rope<T>& otherRope) const;
 
-    bool operator != (const Rope<T>& otherRope) const;
+    bool operator!= (const Rope<T>& otherRope) const;
 
-    bool operator < (const Rope<T>& otherRope) const;
+    bool operator< (const Rope<T>& otherRope) const;
 
-    bool operator <= (const Rope<T>& otherRope) const;
+    bool operator<= (const Rope<T>& otherRope) const;
 
-    bool operator > (const Rope<T>& otherRope) const;
+    bool operator> (const Rope<T>& otherRope) const;
 
-    bool operator >= (const Rope<T>& otherRope) const;
+    bool operator>= (const Rope<T>& otherRope) const;
 
-    Rope<T>& operator = (const Rope<T>& otherRope);
+    Rope<T>& operator= (const Rope<T>& otherRope);
 
-    Rope<T>& operator = (Rope<T>&& otherRope);
+    Rope<T>& operator= (Rope<T>&& otherRope);
 
     std::vector<T> toVec() const;
 

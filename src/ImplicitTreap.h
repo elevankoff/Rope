@@ -71,9 +71,9 @@ public:
     // Returns default random function, which is used in "createNode" method for generating "priority"
     static std::mt19937 getRandFunc();
 
-    ImplicitTreap<T>& operator = (const ImplicitTreap<T>& other);
+    ImplicitTreap<T>& operator= (const ImplicitTreap<T>& other);
 
-    ImplicitTreap<T>& operator = (ImplicitTreap<T>&& other);
+    ImplicitTreap<T>& operator= (ImplicitTreap<T>&& other);
 
     // "1" this > other
     // "0" this == other

@@ -40,9 +40,9 @@ public:
     void setRight(ImplicitTreapNode* other);
 
     // Sets new value
-    ImplicitTreapNode<T>& operator = (const T& otherValue);
+    ImplicitTreapNode<T>& operator= (const T& otherValue);
 
-    ImplicitTreapNode<T>& operator = (T&& otherValue);
+    ImplicitTreapNode<T>& operator= (T&& otherValue);
 
     // Returns "node"'s subtree size
     static size_t getSize(ImplicitTreapNode* node);

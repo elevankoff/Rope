@@ -263,7 +263,7 @@ Node<T> ImplicitTreap<T>::copy(Node<T> to, Node<T> from) {
 }
 
 template<typename T>
-ImplicitTreap<T>& ImplicitTreap<T>::operator = (const ImplicitTreap<T>& other) {
+ImplicitTreap<T>& ImplicitTreap<T>::operator= (const ImplicitTreap<T>& other) {
     if (this != &other) {
         clear(root);
         root = copy(root, other.root);
@@ -272,7 +272,7 @@ ImplicitTreap<T>& ImplicitTreap<T>::operator = (const ImplicitTreap<T>& other) {
 }
 
 template<typename T>
-ImplicitTreap<T>& ImplicitTreap<T>::operator = (ImplicitTreap<T>&& other) {
+ImplicitTreap<T>& ImplicitTreap<T>::operator= (ImplicitTreap<T>&& other) {
     this->root = other.root;
     other.root = nullptr;
     return *this;
