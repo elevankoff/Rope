@@ -85,9 +85,9 @@ public:
     class iterator {
         T* elem;
         size_t pos;
-        Rope<T>* rope;
+        Rope<T>& rope;
     public:
-        iterator(T* elem, size_t pos, Rope<T>* rope);
+        iterator(T* elem, size_t pos, Rope<T>& rope);
 
         iterator operator+ (int n);
         iterator operator- (int n);
@@ -102,15 +102,14 @@ public:
         bool operator== (const iterator& it);
 
         T& operator* ();
-        T* operator->();
     };
 
     class const_iterator {
         const T* elem;
         size_t pos;
-        const Rope<T>* rope;
+        const Rope<T>& rope;
     public:
-        const_iterator(const T* elem, size_t pos, const Rope<T>* rope);
+        const_iterator(const T* elem, size_t pos, const Rope<T>& rope);
 
         const_iterator operator+ (int n);
         const_iterator operator- (int n);
@@ -125,52 +124,15 @@ public:
         bool operator== (const const_iterator& it);
 
         const T& operator* ();
-        const T* operator->();
     };
 
-    iterator begin() {
-        Node<T> root = impTreap.getRoot();
-        if (!root) {
-            return iterator(nullptr, 0, this);
-        }
-        while (root->getLeft()) {
-            root = root->getLeft();
-        }
-        return iterator(&root->getValue(), 0, this);
-    }
+    iterator begin();
 
-    const_iterator begin() const {
-        Node<T> root = impTreap.getRoot();
-        if (!root) {
-            return const_iterator(nullptr, 0, this);
-        }
-        while (root->getLeft()) {
-            root = root->getLeft();
-        }
-        return const_iterator(&root->getValue(), 0, this);
-    }
+    const_iterator begin() const;
 
-    iterator end() {
-        Node<T> root = impTreap.getRoot();
-        if (!root) {
-            return iterator(nullptr, 0, this);
-        }
-        while (root->getRight()) {
-            root = root->getRight();
-        }
-        return iterator(nullptr, size(), this);
-    }
+    iterator end();
 
-    const_iterator end() const {
-        Node<T> root = impTreap.getRoot();
-        if (!root) {
-            return const_iterator(nullptr, 0, this);
-        }
-        while (root->getRight()) {
-            root = root->getRight();
-        }
-        return const_iterator(nullptr, size(), this);
-    }
+    const_iterator end() const;
 
 private:
     static void print(std::ostream& os, Node<T> curRoot, const std::string& delim);

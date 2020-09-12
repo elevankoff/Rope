@@ -6,7 +6,7 @@
 // Iterator implementation
 
 template<typename T>
-Rope<T>::iterator::iterator(T* elem, size_t pos, Rope<T>* rope)
+Rope<T>::iterator::iterator(T* elem, size_t pos, Rope<T>& rope)
         : elem(elem)
         , pos(pos)
         , rope(rope)
@@ -15,23 +15,23 @@ Rope<T>::iterator::iterator(T* elem, size_t pos, Rope<T>* rope)
 template<typename T>
 typename Rope<T>::iterator
 Rope<T>::iterator::operator+ (int n) {
-    return iterator(&(*rope)[pos + n], pos + n, rope);
+    return iterator(&rope[pos + n], pos + n, rope);
 }
 
 template<typename T>
 typename Rope<T>::iterator
 Rope<T>::iterator::operator- (int n) {
-    return iterator(&(*rope)[pos - n], pos - n, rope);
+    return iterator(&rope[pos - n], pos - n, rope);
 }
 
 template<typename T>
 typename Rope<T>::iterator
 Rope<T>::iterator::operator++ (int) {
     iterator res(elem, pos, rope);
-    if (pos + 1 == rope->size()) {
+    if (pos + 1 == rope.size()) {
         pos++;
     } else {
-        elem = &(*rope)[++pos];
+        elem = &rope[++pos];
     }
     return res;
 }
@@ -40,17 +40,17 @@ template<typename T>
 typename Rope<T>::iterator
 Rope<T>::iterator::operator-- (int) {
     iterator res(elem, pos, rope);
-    elem = &(*rope)[--pos];
+    elem = &rope[--pos];
     return res;
 }
 
 template<typename T>
 typename Rope<T>::iterator
 Rope<T>::iterator::operator++ () {
-    if (pos + 1 == rope->size()) {
+    if (pos + 1 == rope.size()) {
         pos++;
     } else {
-        elem = &(*rope)[++pos];
+        elem = &rope[++pos];
     }
     return *this;
 }
@@ -58,7 +58,7 @@ Rope<T>::iterator::operator++ () {
 template<typename T>
 typename Rope<T>::iterator
 Rope<T>::iterator::operator-- () {
-    elem = &(*rope)[--pos];
+    elem = &rope[--pos];
     return *this;
 }
 

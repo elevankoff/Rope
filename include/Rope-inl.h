@@ -3,7 +3,6 @@
 
 #include "Rope.h"
 
-
 template<typename T>
 Rope<T>::Rope(const Rope<T>& otherRope)
     : impTreap(otherRope.impTreap) {}
@@ -174,6 +173,54 @@ std::vector<T> Rope<T>::toVec() const {
     result.reserve(size());
     toVec(impTreap.getRoot(), result);
     return result;
+}
+
+template<typename T>
+typename Rope<T>::iterator Rope<T>::begin() {
+    Node<T> root = impTreap.getRoot();
+    if (!root) {
+        return iterator(nullptr, 0, *this);
+    }
+    while (root->getLeft()) {
+        root = root->getLeft();
+    }
+    return iterator(&root->getValue(), 0, *this);
+}
+
+template<typename T>
+typename Rope<T>::const_iterator Rope<T>::begin() const {
+    Node<T> root = impTreap.getRoot();
+    if (!root) {
+        return const_iterator(nullptr, 0, *this);
+    }
+    while (root->getLeft()) {
+        root = root->getLeft();
+    }
+    return const_iterator(&root->getValue(), 0, *this);
+}
+
+template<typename T>
+typename Rope<T>::iterator Rope<T>::end() {
+    Node<T> root = impTreap.getRoot();
+    if (!root) {
+        return iterator(nullptr, 0, *this);
+    }
+    while (root->getRight()) {
+        root = root->getRight();
+    }
+    return iterator(nullptr, size(), *this);
+}
+
+template<typename T>
+typename Rope<T>::const_iterator Rope<T>::end() const {
+    Node<T> root = impTreap.getRoot();
+    if (!root) {
+        return const_iterator(nullptr, 0, *this);
+    }
+    while (root->getRight()) {
+        root = root->getRight();
+    }
+    return const_iterator(nullptr, size(), *this);
 }
 
 

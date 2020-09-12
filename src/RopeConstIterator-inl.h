@@ -6,7 +6,7 @@
 // Const iterator implementation
 
 template<typename T>
-Rope<T>::const_iterator::const_iterator(const T* elem, size_t pos, const Rope<T>* rope)
+Rope<T>::const_iterator::const_iterator(const T* elem, size_t pos, const Rope<T>& rope)
         : elem(elem)
         , pos(pos)
         , rope(rope)
@@ -15,13 +15,13 @@ Rope<T>::const_iterator::const_iterator(const T* elem, size_t pos, const Rope<T>
 template<typename T>
 typename Rope<T>::const_iterator
 Rope<T>::const_iterator::operator+ (int n) {
-    return const_iterator(&(*rope)[pos + n], pos + n, rope);
+    return const_iterator(&rope[pos + n], pos + n, rope);
 }
 
 template<typename T>
 typename Rope<T>::const_iterator
 Rope<T>::const_iterator::operator- (int n) {
-    return const_terator(&(*rope)[pos - n], pos - n, rope);
+    return const_terator(&rope[pos - n], pos - n, rope);
 }
 
 template<typename T>
@@ -31,7 +31,7 @@ Rope<T>::const_iterator::operator++ (int) {
     if (pos + 1 == rope->size()) {
         pos++;
     } else {
-        elem = &(*rope)[++pos];
+        elem = &rope[++pos];
     }
     return res;
 }
@@ -40,17 +40,17 @@ template<typename T>
 typename Rope<T>::const_iterator
 Rope<T>::const_iterator::operator-- (int) {
    const_iterator res(elem, pos, rope);
-    elem = &(*rope)[--pos];
+    elem = &rope[--pos];
     return res;
 }
 
 template<typename T>
 typename Rope<T>::const_iterator
 Rope<T>::const_iterator::operator++ () {
-    if (pos + 1 == rope->size()) {
+    if (pos + 1 == rope.size()) {
         pos++;
     } else {
-        elem = &(*rope)[++pos];
+        elem = &rope[++pos];
     }
     return *this;
 }
@@ -58,7 +58,7 @@ Rope<T>::const_iterator::operator++ () {
 template<typename T>
 typename Rope<T>::const_iterator
 Rope<T>::const_iterator::operator-- () {
-    elem = &(*rope)[--pos];
+    elem = &rope[--pos];
     return *this;
 }
 
