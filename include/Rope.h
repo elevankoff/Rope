@@ -22,9 +22,21 @@ public:
     template <typename It>
     Rope(It first, It last);
 
+    void push_front(const T& value);
+
+    void push_front(T&& value);
+
+    void pop_front();
+
+    T& front();
+
     void push_back(const T& value);
 
+    void push_back(T&& value);
+
     void pop_back();
+
+    T& back();
     
     void concat(const Rope& otherRope);
 

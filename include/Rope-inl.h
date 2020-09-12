@@ -27,16 +27,45 @@ template<typename It>
 Rope<T>::Rope(It first, It last)
     : impTreap(first, last) {}
 
+template<typename T>
+void Rope<T>::push_front(const T& value) {
+    insert(0, value);
+}
+
+template<typename T>
+void Rope<T>::push_front(T&& value) {
+    impTreap.insert(0, std::move(value));
+}
+
+template<typename T>
+void Rope<T>::pop_front() {
+    erase(0);
+}
+
+template<typename T>
+T& Rope<T>::front() {
+    return impTreap.getValue(0);
+}
+
 
 template<typename T>
 void Rope<T>::push_back(const T& value) {
     impTreap.insert(size(), value);
 }
 
+template<typename T>
+void Rope<T>::push_back(T&& value) {
+    impTreap.insert(size(), std::move(value));
+}
 
 template<typename T>
 void Rope<T>::pop_back() {
     impTreap.erase(size() - 1);
+}
+
+template<typename T>
+T& Rope<T>::back() {
+    return impTreap.getValue(size() - 1);
 }
 
 template<typename T>
