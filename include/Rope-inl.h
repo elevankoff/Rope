@@ -128,9 +128,7 @@ const T& Rope<T>::operator[](size_t pos) const {
 
 template<typename T>
 bool Rope<T>::operator == (const Rope<T>& otherRope) const {
-    if (otherRope.size() != size()) { return false; }
-    std::vector<T> my_v = toVec(), other_v = otherRope.toVec();
-    return my_v == other_v;
+    return impTreap.lexCompare(otherRope.impTreap) == 0;
 }
 
 template<typename T>
@@ -140,8 +138,7 @@ bool Rope<T>::operator != (const Rope<T>& otherRope) const {
 
 template<typename T>
 bool Rope<T>::operator < (const Rope<T>& otherRope) const {
-    std::vector<T> my_v = toVec(), other_v = otherRope.toVec();
-    return my_v < other_v;
+    return impTreap.lexCompare(otherRope.impTreap) == -1;
 }
 
 template<typename T>
@@ -151,7 +148,7 @@ bool Rope<T>::operator <= (const Rope<T>& otherRope) const {
 
 template<typename T>
 bool Rope<T>::operator > (const Rope<T>& otherRope) const {
-    return !((*this) <= otherRope);
+    return impTreap.lexCompare(otherRope.impTreap) == 1;
 }
 
 template<typename T>

@@ -297,12 +297,8 @@ int ImplicitTreap<T>::lexCompare(const ImplicitTreap<T>& other) const {
             return 1;
         }
 
-        if (firstNode->getRight()) {
-            fillStack(firstNode->getRight(), firstSt);
-        }
-        if (secondNode->getRight()) {
-            fillStack(secondNode->getRight(), secondSt);
-        }
+        fillStack(firstNode->getRight(), firstSt);
+        fillStack(secondNode->getRight(), secondSt);
     }
 
     if (firstSt.empty() && !secondSt.empty()) {
