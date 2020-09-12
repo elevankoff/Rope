@@ -245,6 +245,14 @@ ImplicitTreap<T>::~ImplicitTreap() {
 }
 
 template<typename T>
+void ImplicitTreap<T>::fillStack(Node<T> node, std::stack<Node<T>>& st) const {
+    while (node) {
+        st.push(node);
+        node = node->getLeft();
+    }
+}
+
+template<typename T>
 Node<T> ImplicitTreap<T>::copy(Node<T> to, Node<T> from) {
     if (!from) { return nullptr; }
     to = createNode(from->getValue());
@@ -255,7 +263,7 @@ Node<T> ImplicitTreap<T>::copy(Node<T> to, Node<T> from) {
 }
 
 template<typename T>
-ImplicitTreap<T>& ImplicitTreap<T>::operator=(const ImplicitTreap<T>& other) {
+ImplicitTreap<T>& ImplicitTreap<T>::operator = (const ImplicitTreap<T>& other) {
     if (this != &other) {
         clear(root);
         root = copy(root, other.root);
@@ -264,10 +272,46 @@ ImplicitTreap<T>& ImplicitTreap<T>::operator=(const ImplicitTreap<T>& other) {
 }
 
 template<typename T>
-ImplicitTreap<T>& ImplicitTreap<T>::operator=(ImplicitTreap<T>&& other) {
+ImplicitTreap<T>& ImplicitTreap<T>::operator = (ImplicitTreap<T>&& other) {
     this->root = other.root;
     other.root = nullptr;
     return *this;
+}
+
+template<typename T>
+int ImplicitTreap<T>::lexCompare(const ImplicitTreap<T>& other) const {
+    Node<T> firstNode(getRoot());
+    Node<T> secondNode(other.getRoot());
+    std::stack<Node<T>> firstSt, secondSt;
+
+    fillStack(firstNode, firstSt);
+    fillStack(secondNode, secondSt);
+
+    while (!firstSt.empty() && !secondSt.empty()) {
+        firstNode = firstSt.top(); firstSt.pop();
+        secondNode = secondSt.top(); secondSt.pop();
+
+        if (firstNode->getValue() < secondNode->getValue()) {
+            return -1;
+        } else if (firstNode->getValue() > secondNode->getValue()) {
+            return 1;
+        }
+
+        if (firstNode->getRight()) {
+            fillStack(firstNode->getRight(), firstSt);
+        }
+        if (secondNode->getRight()) {
+            fillStack(secondNode->getRight(), secondSt);
+        }
+    }
+
+    if (firstSt.empty() && !secondSt.empty()) {
+        return -1;
+    } else if (!firstSt.empty() && secondSt.empty()) {
+        return 1;
+    } else {
+        return 0;
+    }
 }
 
 

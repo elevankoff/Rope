@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <iostream>
+#include <stack>
 
 #include "ImplicitTreapNode.h"
 
@@ -74,8 +75,16 @@ public:
 
     ImplicitTreap<T>& operator = (ImplicitTreap<T>&& other);
 
+    // "1" this > other
+    // "0" this == other
+    // "-1" this < other
+    int lexCompare(const ImplicitTreap<T>& other) const;
+
 private:
+
     explicit ImplicitTreap(Node<T> otherRoot);
+
+    void fillStack(Node<T> node, std::stack<Node<T>>& st) const;
 
     static Node<T> copy(Node<T> to, Node<T> from);
 
