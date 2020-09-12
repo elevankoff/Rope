@@ -9,7 +9,6 @@ template<typename T>
 class ImplicitTreapNode {
 public:
     // Constructors
-    ImplicitTreapNode();
 
     ImplicitTreapNode(size_t priority, T&& value);
 

@@ -21,7 +21,7 @@ public:
     explicit ImplicitTreap(const Container& values);
 
     template<typename Container>
-    ImplicitTreap(Container&& values);
+    explicit ImplicitTreap(Container&& values);
 
     ImplicitTreap(const ImplicitTreap<T>& other);
 
