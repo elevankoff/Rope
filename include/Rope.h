@@ -69,6 +69,8 @@ public:
     // prints "cnt" elements from position "from"
     void print(size_t from, size_t cnt, std::ostream& os = std::cout, const std::string& delim = " ");
 
+    void clear();
+
     // Returns number of elements in the current rope
     size_t size() const;
 

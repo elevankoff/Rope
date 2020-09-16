@@ -141,6 +141,11 @@ void Rope<T>::print(size_t from, size_t cnt, std::ostream& os, const std::string
 }
 
 template<typename T>
+void Rope<T>::clear() {
+    erase(0, size());
+}
+
+template<typename T>
 size_t Rope<T>::size() const {
     return impTreap.size();
 }
