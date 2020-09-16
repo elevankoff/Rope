@@ -269,6 +269,7 @@ void TestRope1() {
 
     Rope<char> s5(std::string("ab"));
     s5[1] = 'a';
+
     assert('a' == s5[1]);
     assert(s5 == Rope<char>(std::string("aa")));
     s5.push_back('c');
@@ -387,7 +388,176 @@ void TestAll() {
     TestRope2();
 }
 
+using namespace __gnu_cxx;
+#include <ext/rope>
+#include <set>
+
+std::mt19937 rng(std::chrono::steady_clock::now().time_since_epoch().count());
+
+template<typename T>
+void curTime(T& timer) {
+    timer = std::chrono::high_resolution_clock::now();
+}
+
+template<typename T>
+void printDuration(const T& start, const T& stop) {
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+    std::cout << duration.count() / 1'000'000.0 << " (sec)\n";
+}
+
+void CompareTime() {
+    auto start = std::chrono::high_resolution_clock::now(),
+    stop = std::chrono::high_resolution_clock::now();
+
+    std::vector<char> lines[1000];
+    for (size_t i = 0; i < 1000; i++) {
+        size_t size = 1000;
+        for (size_t j = 0; j < size; j++) {
+            lines[i].push_back(char('a' + rng()%26));
+        }
+    }
+
+
+    std::cout << "Random insertions: \n";
+    curTime(start);
+    rope<char> sr[1000];
+
+    for (size_t i = 0; i < 1000; i++) {
+        for (size_t j = 0; j < 1000; j++) {
+            if (j == 0) {
+                sr[i].push_back(lines[i][j]);
+            } else {
+                sr[i].insert(rng() % sr[i].size(), lines[i][j]);
+            }
+        }
+    }
+
+    curTime(stop);
+    std::cout << "__gnu_cxx rope: ";
+    printDuration(start, stop);
+
+    curTime(start);
+    Rope<char> mr[1000];
+    for (size_t i = 0; i < 1000; i++) {
+        for (size_t j = 0; j < 1000; j++) {
+            if (j == 0) {
+                mr[i].push_back(lines[i][j]);
+            } else {
+                mr[i].insert(rng() % mr[i].size(), lines[i][j]);
+            }
+        }
+    }
+    curTime(stop);
+
+    std::cout << "My rope: ";
+    printDuration(start, stop);
+
+    std::cout << "Random deletions: \n";
+
+    curTime(start);
+    for (size_t i = 0; i < 1000; i++) {
+        for (size_t j = 0; j < 1000; j++) {
+            size_t pos = rng() % sr[i].size();
+            sr[i].erase(pos, 1);
+        }
+    }
+    curTime(stop);
+
+    std::cout << "__gnu_cxx rope: ";
+    printDuration(start, stop);
+
+    curTime(start);
+    for (auto & i : mr) {
+        for (size_t j = 0; j < 1000; j++) {
+            size_t pos = rng() % i.size();
+            i.erase(pos);
+        }
+    }
+    curTime(stop);
+
+    std::cout << "My rope: ";
+    printDuration(start, stop);
+
+    for (size_t i = 0; i < 1000; i++) {
+        for (size_t j = 0; j < 1000; j++) {
+            mr[i].push_back(lines[i][j]);
+            sr[i].push_back(lines[i][j]);
+        }
+    }
+
+    std::cout << "Appending ropes (with copying): \n";
+    curTime(start);
+    for (size_t i = 1; i < 1000; i++) {
+        sr[0].append(sr[i]);
+    }
+    curTime(stop);
+    std::cout << "__gnu_cxx rope: ";
+    printDuration(start, stop);
+
+    curTime(start);
+    for (size_t i = 1; i < 1000; i++) {
+        mr[0].concat(mr[i]);
+    }
+    curTime(stop);
+    std::cout << "My rope: ";
+    printDuration(start, stop);
+
+    std::cout << "Clearing: \n";
+    curTime(start);
+    for (size_t i = 0; i < 1000; i++) {
+        sr[i].clear();
+    }
+    curTime(stop);
+    std::cout << "__gnu_cxx rope: ";
+    printDuration(start, stop);
+
+    curTime(start);
+    for (size_t i = 0; i < 1000; i++) {
+        mr[i].clear();
+    }
+    curTime(stop);
+    std::cout << "My rope: ";
+    printDuration(start, stop);
+
+    std::cout << "Push back: \n";
+    curTime(start);
+    for (size_t i = 0; i < 1000; i++) {
+        for (auto& c : lines[i]) {
+            sr[i].push_back(c);
+        }
+    }
+    curTime(stop);
+    std::cout << "__gnu_cxx rope: ";
+    printDuration(start, stop);
+
+    curTime(start);
+    for (size_t i = 0; i < 1000; i++) {
+        for (auto& c : lines[i]) {
+            mr[i].push_back(c);
+        }
+    }
+    curTime(stop);
+    std::cout << "My rope: ";
+    printDuration(start, stop);
+
+    std::cout << "Appending ropes (without copying): \n";
+    std::cout << "__gnu_cxx rope: N/A \n";
+
+    curTime(start);
+    for (size_t i = 1; i < 1000; i++) {
+        mr[0].concat(std::move(mr[i]));
+    }
+    curTime(stop);
+    std::cout << "My rope: ";
+    printDuration(start, stop);
+}
+
 int main() {
     srand(time(0));
+    CompareTime();
+    std::cout << "\n\n";
     TestAll();
+
+    return 0;
+
 }
