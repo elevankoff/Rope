@@ -9,26 +9,26 @@ My implementation is based on Treap data structure with implicit key, so you can
 #include "Rope.h"
 
 int main() {
-    Rope<char> rope1("Hello, ");
-    Rope<char> rope2("World!!!");
+    Rope<char> rope1(std::string("Hello, "));
+    Rope<char> rope2(std::string("World!!!"));
     rope1.concat(std::move(rope2));
-    rope1.print(std::cout, 0, rope1.getSize(), "");
+    rope1.print(0, rope1.size(), std::cout, "");
     std::cout << '\n';
     /* Better don't touch moved elements, but in the current version
      * moved element becomes empty, so we can print it and get an empty string*/
-    rope2.print(std::cout, 0, rope2.getSize(), "");
+    rope2.print(0, rope2.size(), std::cout, "");
     std::cout << '\n';
 
     rope1.erase(0, 5);
     Rope<char> toAdd("I love you");
     rope1.insert(0, std::move(toAdd));
-    rope1.print(std::cout, 0, rope1.getSize(), "");
+    rope1.print(0, rope1.size(), std::cout,  "");
     std::cout << '\n';
     auto p = rope1.split(10);
-    p.first.print(std::cout, 0, p.first.getSize(), "");
+    p.first.print(0, p.first.size(),std::cout,  "");
     std::cout << '\n';
-    p.second = Rope<char>("Lalita");
-    p.second.print(std::cout, 0, p.second.getSize(), "");
+    p.second = Rope<char>(std::string("Lalita"));
+    p.second.print(0, p.second.size(), std::cout,  "");
     std::cout << '\n';
     return 0;
 }
