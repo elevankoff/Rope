@@ -6,6 +6,8 @@ My implementation is based on Treap data structure with implicit key, so you can
 ## Usage
 
 ```cpp
+#include <iostream>
+#include <utility>
 #include "Rope.h"
 
 int main() {
